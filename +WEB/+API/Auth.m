@@ -1,10 +1,10 @@
 classdef Auth < handle
-    % WEB-requests Authentificator 
+    % WEB Requests Authenticator 
     
     properties
-        req % Req object
-        authdata % auth data
-        method % http method
+        req % Req Object
+        authdata % Authentication Data
+        method % HTTP method
     end
     
     methods
@@ -21,14 +21,8 @@ classdef Auth < handle
             end
         end
         
-        
-        function set.authdata(obj, authdata)
-            %% Setup Authentification data
-            obj.authdata = authdata;
-        end
-        
         function req = auth(obj)
-            %% Authorize
+            %% Authenticate
             a = obj.authdata;
             if ~isempty(a) && isfield(a, 'oauth_version')
                 if a.oauth_version == "1.0"
@@ -76,6 +70,22 @@ classdef Auth < handle
             req = obj.req;
         end
         
+        function res = gettoken(obj, params)
+            %% Get auth token
+            if nargin < 2
+                params = '';
+            end
+            obj.auth();
+            if strcmpi(obj.method, 'browser')
+                res = obj.getfrombrowser(params);
+            else
+                res = obj.req.call(obj.method);
+                if ~isstruct(res)
+                    res = obj.parsequery(res, params);
+                end
+            end
+        end
+        
         function auth_data = gettoken20(obj, type, client_secret)
             %% Get access token for Auth 2.0
             if strcmpi(type, 'implicit') % Implicit Auth 2.0
@@ -101,27 +111,13 @@ classdef Auth < handle
             auth_data.expires_in = str2double(string(auth_data.expires_in));
         end
         
-        function res = gettoken(obj, params)
-            %% Get auth token
-            if nargin < 2
-                params = '';
-            end
-            obj.auth();
-            if strcmpi(obj.method, 'browser')
-                res = obj.getfrombrowser(params);
-            else
-                res = obj.req.call(obj.method);
-                if ~isstruct(res)
-                    res = obj.parsequery(res, params);
-                end
-            end
-        end
-        
         function [values, url] = getfrombrowser(obj, params)
-            %% Open URL in browser and get result URL that satisfies @cond function
+            %% Open URL in browser and get specified params values
             url = '';
             [~, h, ~] = web(obj.req.getfullurl());
-            while ~h.isValid, end
+            while ~h.isValid
+                % wait till Web Browser is ready
+            end
             done = false;
             while ~done
                 if ~isempty(h.getActiveBrowser)
@@ -148,21 +144,6 @@ classdef Auth < handle
             ps = cell2struct(ps(:,2), ps(:,1));
         end
         
-        function T = newtable(~)
-            %% New empty name/value table
-            T = cell2table(cell(0, 2), 'VariableNames', {'name', 'value'});
-        end
-        
-        function T = addrow(~, T, name, value)
-            %% add row to table
-            i = strcmpi(T.name, name);
-            if any(i)
-                T.value{i} = value;
-            else
-                T = [T; {name value}];
-            end
-        end
-        
         function sign = HMAC(~, str, key, alg)
             %% HMAC encryption
             import java.net.*;
@@ -184,6 +165,25 @@ classdef Auth < handle
             sign = mac.doFinal(bytes);
             sign = java.lang.String(Base64.encodeBase64(sign));
             sign = strtrim((sign.toCharArray())');
+        end
+    end
+    
+    
+    methods (Access = private)
+        
+        function T = newtable(~)
+            %% New empty name/value table
+            T = cell2table(cell(0, 2), 'VariableNames', {'name', 'value'});
+        end
+        
+        function T = addrow(~, T, name, value)
+            %% Add row to table
+            i = strcmpi(T.name, name);
+            if any(i)
+                T.value{i} = value;
+            else
+                T = [T; {name value}];
+            end
         end
         
     end

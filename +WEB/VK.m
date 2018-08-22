@@ -3,12 +3,12 @@ classdef VK < WEB.API.Common
     % https://vk.com/dev/manuals
     
     properties
-        URL = "https://api.vk.com/method/"
-        client_id
-        client_secret
-        scope
-        ver = '5.8'
-        authdata
+        URL = "https://api.vk.com/method/" % Base URL
+        client_id % Client ID
+        client_secret % Client Secret
+        scope % Scope
+        ver = '5.8' % API Version
+        authdata % Authentication Data
     end
     
     methods
@@ -47,8 +47,8 @@ classdef VK < WEB.API.Common
             end
         end
         
-        function res = call_api(obj, method, params, vars)
-            %% Get via VK API
+        function [res, count] = call_api(obj, method, params, vars)
+            %% Call VK API
             [params, apiopts] = obj.prepare_params(params, vars);
             if isfield(apiopts, 'getAll')
                 getAll = apiopts.('getAll');
@@ -64,41 +64,34 @@ classdef VK < WEB.API.Common
             A = WEB.API.Auth(req, obj.authdata.data);
             req = A.oauth20();
             res = get(req);
+            count = [];
             obj.check_api_error(res);
-            [res, count] = obj.get_items(res.response);
-            if getAll && (count >= params.count)
-                % get all items
+            extract = isfield(apiopts, 'extract') && apiopts.extract;
+            if extract
+                [res, count] = obj.extract(res.response, ["items", "users"]);
+            end
+            if getAll && (count >= 1000)
+                % Get all items
                 addRes = res;
+                offset = 0;
                 while ~isempty(addRes)
-                    offset = str2double(req.getquery('offset')) + params.count;
+                    offset = offset + 1000;
                     req.addquery('offset', offset);
                     addRes = get(req);
-                    addRes = obj.get_items(addRes.response);
+                    if extract
+                        addRes = obj.extract(addRes.response, ["items", "users"]);
+                    end
                     res = [res; addRes];
                 end
             end
+            TU = WEB.Utils.Tables();
+            res = TU.concat(res); % concatenate geterogeneous results
         end
         
         function check_api_error(~, resp)
             %% Check API Call Error
             if isfield(resp, 'error')
                 error(['API error: ' resp.error.error_msg]);
-            end
-        end
-        
-        function [items, count] = get_items(~, resp)
-            %% Get items from repsonse
-            if isfield(resp, 'items')
-                items = resp.items;
-            elseif isfield(resp, 'users')
-                items = resp.users;
-            else
-                items = resp;
-            end
-            if isfield(resp, 'count')
-                count = resp.count;
-            else
-                count = [];
             end
         end
         
@@ -155,19 +148,20 @@ classdef VK < WEB.API.Common
             obj.authdata.clear();
         end
         
-        function res = friends_get(obj, user_id, varargin)
-            %% Get user subscriptions
+        function [res, count] = friends_get(obj, user_id, varargin)
+            %% Get user friends
             method = 'friends.get';
             params = {'user_id', 'required', user_id
                 'fields', 'optional', ''
                 'offset', 'optional', 0
                 'count', 'optional', 5000
-                'getAll', 'apiOption', false};
-            res = obj.call_api(method, params, varargin);
+                'getAll', 'apiOption', false
+                'extract', 'apiOption', true};
+            [res, count] = obj.call_api(method, params, varargin);
         end
         
-        function res = groups_getMembers(obj, group_id, varargin)
-            %% Search groups
+        function [res, count] = groups_getMembers(obj, group_id, varargin)
+            %% Get group members
             method = 'groups.getMembers';
             params = {'group_id', 'required', group_id
                 'fields', 'optional', ''
@@ -175,22 +169,24 @@ classdef VK < WEB.API.Common
                 'sort', 'optional', 'id_asc'
                 'offset', 'optional', 0
                 'count', 'optional', 1000;
-                'getAll', 'apiOption', 0};
-            res = obj.call_api(method, params, varargin);
+                'getAll', 'apiOption', 0
+                'extract', 'apiOption', true};
+            [res, count] = obj.call_api(method, params, varargin);
         end
         
-        function res = groups_search(obj, q, varargin)
+        function [res, count] = groups_search(obj, q, varargin)
             %% Search groups
             method = 'groups.search';
             params = {'q', 'required', q
                 'type', 'optional', 'group,page,event'
                 'sort', 'optional', 0
                 'offset', 'optional', 0
-                'count', 'optional', 1000};
-            res = obj.call_api(method, params, varargin);
+                'count', 'optional', 1000
+                'extract', 'apiOption', true};
+            [res, count] = obj.call_api(method, params, varargin);
         end
         
-        function res = users_getFollowers(obj, user_id, varargin)
+        function [res, count] = users_getFollowers(obj, user_id, varargin)
             %% Get user followers
             method = 'users.getFollowers';
             params = {'user_id', 'required', user_id
@@ -198,24 +194,26 @@ classdef VK < WEB.API.Common
                 'name_case', 'optional', 'nom'
                 'offset', 'optional', 0
                 'count', 'optional', 1000
-                'getAll', 'apiOption', false};
-            res = obj.call_api(method, params, varargin);
+                'getAll', 'apiOption', false
+                'extract', 'apiOption', true};
+            [res, count] = obj.call_api(method, params, varargin);
         end
         
-        function res = users_getSubscriptions(obj, user_id, varargin)
+        function [res, count] = users_getSubscriptions(obj, user_id, varargin)
             %% Get user subscriptions
             method = 'users.getSubscriptions';
             params = {'user_id', 'required', user_id
                 'fields', 'optional', ''
                 'offset', 'optional', 0
                 'count', 'optional', 200
-                'extended', 'optional', 0
-                'getAll', 'apiOption', false};
-            res = obj.call_api(method, params, varargin);
+                'extended', 'optional', true
+                'getAll', 'apiOption', false
+                'extract', 'apiOption', true};
+            [res, count] = obj.call_api(method, params, varargin);
         end
         
         function res = wall_post(obj, owner_id, message, varargin)
-            %% Get user followers
+            %% Post on wall
             method = 'wall.post';
             params = {'owner_id', 'required', owner_id
                 'message', 'required', message

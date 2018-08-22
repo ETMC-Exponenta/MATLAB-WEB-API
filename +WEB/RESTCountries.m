@@ -3,15 +3,16 @@ classdef RESTCountries < WEB.API.Common
     % http://restcountries.eu
     
     properties
-        URL = 'https://restcountries.eu/rest/v2/'
+        URL = 'https://restcountries.eu/rest/v2/' % Base URL
     end
     
     methods
         function obj = RESTCountries()
-            %IPFY Construct an instance of this class
+            % RESTCountries Construct an instance of this class
         end
         
         function [res, apiopts] = call_api(obj, method, params, vars)
+            %% Call WEB API
             req = WEB.API.Req(obj.URL);
             req.addurl(method);
             if ~isempty(params)
@@ -58,7 +59,7 @@ classdef RESTCountries < WEB.API.Common
         end
         
         function res = byRegion(obj, region, varargin)
-            %% Search by ISO 4217 currency code
+            %% Search by region
             method = "region/" + region;
             res = obj.call_api(method, {}, varargin);
         end

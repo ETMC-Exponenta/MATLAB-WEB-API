@@ -1,18 +1,14 @@
 classdef (Abstract) Common < handle
-    % API Common Class
-    
-    properties
+    % APIs Common Class
         
-    end
-    
     methods
         function obj = Common()
-            %API Construct an instance of this class
+            % API Construct an instance of this class
         end
         
         function [params, apiopts] = prepare_params(~, ps, vars)
             %% Prepare method parameters
-            if ~isempty(ps)
+            if (nargin > 1) && ~isempty(ps)
                 reqps = ps(ps(:, 2) == "required", :);
                 optps = ps(ps(:, 2) == "optional", :);
                 paropps = ps(ismember(ps(:, 2), {'optional', 'apiOption'}), :);
@@ -42,12 +38,17 @@ classdef (Abstract) Common < handle
             end
         end
         
-        function [items, count] = extract(~, resp, name)
+        function [items, count] = extract(~, resp, names)
             %% Extract items from repsonse
-            if isfield(resp, name)
-                items = resp.(name);
-            else
-                items = resp;
+            names = string(names);
+            for i = 1 : length(names)
+                name = names(i);
+                if isstruct(resp) && isfield(resp, name)
+                    items = resp.(name);
+                    break;
+                else
+                    items = resp;
+                end
             end
             if isstruct(items)
                 items = struct2table(items, 'AsArray', 1);

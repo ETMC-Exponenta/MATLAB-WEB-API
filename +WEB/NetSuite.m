@@ -1,23 +1,23 @@
 classdef NetSuite < WEB.API.Common
-    % Work with NetSuite
+    % NetSuite WEB API
     
     properties (Access = private, Hidden = true)
-        URL = 'https://%s.restlets.api.netsuite.com/app/site/hosting/restlet.nl'
-        account
-        consumer_key
-        consumer_secret
-        token_id
-        token_secret
+        URL = 'https://%s.restlets.api.netsuite.com/app/site/hosting/restlet.nl' % Base URL
+        account % Company Account ID
+        consumer_key % Consumer Key
+        consumer_secret % Consumer Secret
+        token_id % Token ID
+        token_secret % Token Secret
         sd_search = [149 1]; % [script deploy]
         sd_submit = [150 1]; % [script deploy]
-        email % NLAuth email
-        password % NLAuth password
-        role % NLAuth role
+        email % NLAuth Email
+        password % NLAuth Password
+        role % NLAuth Role
     end
     
     methods
         function obj = NetSuite(account, email, password, role, token_secret)
-            %% NS Construct an instance of this class
+            %% NetSuite Construct an instance of this class
             obj.account = account;
             if nargin < 5
                 obj.email = email;
@@ -33,12 +33,11 @@ classdef NetSuite < WEB.API.Common
         
         function url = getUrl(obj)
             %% Get request URL
-            url = 'https://%s.restlets.api.netsuite.com/app/site/hosting/restlet.nl';
-            url = sprintf(url, obj.account);
+            url = sprintf(obj.URL, obj.account);
         end
         
         function [res, err] = call_api(obj, sd, method, query, body)
-            %% New request
+            %% Call NetSuite API
             req = WEB.API.Req(obj.getUrl());
             sd = string(sd);
             req.addquery('script', sd(1));
@@ -79,7 +78,7 @@ classdef NetSuite < WEB.API.Common
         end
         
         function [resp, err] = getEmployee(obj, email)
-            %% Get self name
+            %% Get Employee Name
             [resp, err] = obj.search('employee', {'firstname' 'lastname'}, {'email' 'is' email});
             if ~err
                 resp = obj.extractVal(resp);

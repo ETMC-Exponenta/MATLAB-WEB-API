@@ -3,8 +3,8 @@ classdef DataGov < WEB.API.Common
     % https://data.gov.ru/pravila-i-rekomendacii
     
     properties
-        URL = 'https://data.gov.ru/api/'
-        access_token
+        URL = 'http://data.gov.ru/api/' % Base URL
+        access_token % Access Token
     end
     
     methods
@@ -27,14 +27,6 @@ classdef DataGov < WEB.API.Common
             req.setopts('ContentType', 'json');
             req.setopts('Timeout', 15);
             res = get(req);
-%             obj.check_api_error(res);
-        end
-        
-        function check_api_error(~, resp)
-            %% Check API Call Error
-            if isfield(resp, 'errors')
-                error(['API error: ' jsonencode(resp.errors)]);
-            end
         end
         
         function res = main(obj)
@@ -86,7 +78,7 @@ classdef DataGov < WEB.API.Common
         end
         
         function res = organizations(obj)
-            %% Get datasets
+            %% Get organizations
             method = 'organization';
             res = obj.call_api(method);
             res = struct2table(res);
@@ -95,7 +87,7 @@ classdef DataGov < WEB.API.Common
         end
         
         function [info, data] = organization(obj, id)
-            %% Get datasets
+            %% Get organization datasets
             method = "organization/" + id;
             info = obj.call_api(method);
             if nargout > 1
@@ -105,14 +97,14 @@ classdef DataGov < WEB.API.Common
         end
         
         function res = topics(obj)
-            %% Get datasets
+            %% Get datasets topics
             method = 'topic';
             res = obj.call_api(method);
             res = sort({res.name}');
         end
         
         function [info, data] = topic(obj, title)
-            %% Get datasets
+            %% Get topic datasets
             method = "topic/" + title;
             info = obj.call_api(method);
             if nargout > 1

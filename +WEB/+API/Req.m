@@ -1,16 +1,16 @@
 classdef Req < handle
-    % Helper class for WEB-requests
+    % Library for easy work with WEB requests
 
     properties
         url % Request URL
-        query % Request query fields
-        body % Request body fields
-        opts % Request options
+        query % Request Query Fields
+        body % Request Body Ffields
+        opts % Request Options
     end
     
     methods
         function obj = Req(url)
-            %% Create new Request object
+            %% Create new Req object
             if nargin < 1
                 url = '';
             end
@@ -20,14 +20,20 @@ classdef Req < handle
             obj.clearopts();
         end
         
-        function addurl(obj, add)
-            %% Add method to URL
-            if ~isempty(obj.url)
-                 if ~endsWith(obj.url, '/')
-                     obj.url = obj.url + "/";
-                 end
-                 obj.url = obj.url + string(add);
+        function value = getheader(obj, name)
+            %% Get header fields
+            value = obj.convert(obj.opts.HeaderFields);
+            if nargin > 1
+                value = obj.getbyname(value, name);
             end
+        end
+        
+        function header = setheader(obj, header)
+            %% Set header (i.e. for JSON data)
+            if istable(header)
+                header = obj.convert(header);
+            end
+            obj.opts.HeaderFields = header;
         end
         
         function header = addheader(obj, name, value)
@@ -40,30 +46,35 @@ classdef Req < handle
             obj.opts.HeaderFields = obj.convert(header);
         end
         
-        function header = setheader(obj, header)
-            %% Set header (i.e. for JSON data)
-            if istable(header)
-                header = obj.convert(header);
-            end
-            obj.opts.HeaderFields = header;
+        function header = clearheader(obj, header)
+            %% Clear header fields
+            opts = weboptions();
+            obj.opts.HeaderFields = opts.HeaderFields;
         end
         
-        function value = getheader(obj, name)
-            %% Get header
-            value = obj.convert(obj.opts.HeaderFields);
+        function value = getquery(obj, name)
+            %% Get query fields
+            value = obj.query;
             if nargin > 1
                 value = obj.getbyname(value, name);
             end
         end
         
-        function T = addrow(~, T, name, value)
-            %% add row to table
-            i = strcmpi(T.name, name);
-            if any(i)
-                T.value{i} = value;
+        function query = setquery(obj, query)
+            %% Set query fields
+            if isempty(query)
+                obj.clearquery();
             else
-                T = [T; {name value}];
+                if isstruct(query)
+                    obj.clearquery();
+                    for f = fieldnames(query)'
+                        obj.addquery(f{1}, query.(f{1}));
+                    end
+                else
+                    obj.query = query;
+                end
             end
+            query = obj.query;
         end
         
         function query = addquery(obj, name, value)
@@ -82,35 +93,23 @@ classdef Req < handle
             obj.query = query;
         end
         
-        function query = setquery(obj, query)
-            %% Set query
-            if isempty(query)
-                obj.clearquery();
-            else
-                if isstruct(query)
-                    obj.clearquery();
-                    for f = fieldnames(query)'
-                        obj.addquery(f{1}, query.(f{1}));
-                    end
-                else
-                    obj.query = query;
-                end
-            end
-            query = obj.query;
-        end
-        
         function query = clearquery(obj)
-            %% Clear query
+            %% Clear query fields
             query = obj.newtable();
             obj.query = query;
         end
         
-        function value = getquery(obj, name)
-            %% Get query
-            value = obj.query;
+        function value = getbody(obj, name)
+            %% Get body
+            value = obj.body;
             if nargin > 1
                 value = obj.getbyname(value, name);
             end
+        end
+        
+        function body = setbody(obj, body)
+            %% Set body
+            obj.body = body;
         end
         
         function body = addbody(obj, name, value)
@@ -123,23 +122,15 @@ classdef Req < handle
             obj.body = body;
         end
         
-        function body = setbody(obj, body)
-            %% Set body
-            obj.body = body;
-        end
-        
         function body = clearbody(obj)
             %% Clear body
             body = obj.newtable();
             obj.body = body;
         end
         
-        function value = getbody(obj, name)
-            %% Get body
-            value = obj.body;
-            if nargin > 1
-                value = obj.getbyname(value, name);
-            end
+        function url = geturl(obj)
+            %% Get Request URL
+            url = char(obj.url);
         end
         
         function seturl(obj, url)
@@ -147,9 +138,14 @@ classdef Req < handle
             obj.url = string(url);
         end
         
-        function url = geturl(obj)
-            %% Get Request URL
-            url = char(obj.url);
+        function addurl(obj, add)
+            %% Add method to URL
+            if ~isempty(obj.url)
+                 if ~endsWith(obj.url, '/')
+                     obj.url = obj.url + "/";
+                 end
+                 obj.url = obj.url + string(add);
+            end
         end
         
         function fullurl = getfullurl(obj)
@@ -270,6 +266,24 @@ classdef Req < handle
             T = cell2table(cell(0, 2), 'VariableNames', {'name', 'value'});
         end
         
+        function T = addrow(~, T, name, value)
+            %% Add row to table
+            i = strcmpi(T.name, name);
+            if any(i)
+                T.value{i} = value;
+            else
+                T = [T; {name value}];
+            end
+        end
+        
+        function value = getbyname(~, T, name)
+            %% Get value by name
+            value = T.value(strcmp(T.name, name));
+            if length(value) == 1
+                value = char(value);
+            end
+        end
+        
         function h = convert(obj, h)
             %% Convert header between formats
             if istable(h)
@@ -308,14 +322,6 @@ classdef Req < handle
                 txt = char(txt);
             else
                 txt = cellstr(txt);
-            end
-        end
-        
-        function value = getbyname(~, T, name)
-            %% Get value by name
-            value = T.value(strcmp(T.name, name));
-            if length(value) == 1
-                value = char(value);
             end
         end
         

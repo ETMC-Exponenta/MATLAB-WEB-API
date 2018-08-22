@@ -3,8 +3,8 @@ classdef HeadHunter < WEB.API.Common
     % https://github.com/hhru/api
     
     properties
-        URL = 'https://api.hh.ru/'
-        access_token
+        URL = 'https://api.hh.ru/' % Base URL
+        access_token % Access Token
     end
     
     methods
@@ -27,14 +27,6 @@ classdef HeadHunter < WEB.API.Common
             req.setopts('ContentType', 'json');
             req.setopts('Timeout', 15);
             res = get(req);
-            obj.check_api_error(res);
-        end
-        
-        function check_api_error(~, resp)
-            %% Check API Call Error
-            if isfield(resp, 'errors')
-                error(['API error: ' jsonencode(resp.errors)]);
-            end
         end
         
         function res = me(obj)

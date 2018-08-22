@@ -3,23 +3,23 @@ classdef Flickr < WEB.API.Common
     %   Detailed explanation goes here
     
     properties
-        URL = "https://www.flickr.com/services/rest"
-        appKey
-        appSecret
-        authdata % auth data
+        URL = "https://www.flickr.com/services/rest" % Base URL
+        appKey % Application Key
+        appSecret % Application Secret
+        storage % Authentication Data
     end
     
     methods
         function obj = Flickr(appKey, appSecret)
             %% FLICKR Construct an instance of this class
-            obj.authdata = WEB.Utils.Storage('flickr_auth_data.mat');
+            obj.storage = WEB.Utils.Storage('flickr_auth_data.mat');
             obj.appKey = appKey;
             obj.appSecret = appSecret;
         end
         
         function set_data_path(obj, path)
             %% Set auth data path
-            obj.authdata.path = path;
+            obj.storage.path = path;
         end
         
         function auth_data = login(obj, opt)
@@ -27,11 +27,11 @@ classdef Flickr < WEB.API.Common
             if (nargin > 1) && opt == "force"
                 auth_data = [];
             else
-                auth_data = obj.authdata.load();
+                auth_data = obj.storage.load();
             end
             if isempty(auth_data)
                 auth_data = obj.getAccessToken();
-                obj.authdata.save(auth_data);
+                obj.storage.save(auth_data);
             end
             if isempty(auth_data)
                 error('Flickr API Error: Unsucessfull Authorization');
@@ -40,12 +40,12 @@ classdef Flickr < WEB.API.Common
         
         function logout(obj)
             %% Delete auth data
-            obj.authdata.clear();
+            obj.storage.clear();
         end
         
         function a = getAuth(obj)
             %% Set Auth paramaters
-            ad = obj.authdata.data;
+            ad = obj.storage.data;
             tokenSecret = '';
             if ~isempty(ad)
                 if all(isfield(ad, {'oauth_token', 'oauth_token_secret'}))
@@ -145,7 +145,7 @@ classdef Flickr < WEB.API.Common
             params = {'photo_id', 'required', photo_id};
             res = obj.call_api(method, params, varargin);
             res = res.sizes;
-            res.size = struct2table(res.size, 'AsArray', 1);
+            res = struct2table(res.size, 'AsArray', 1);
         end
         
         function res = photos_search(obj, varargin)
@@ -176,10 +176,28 @@ classdef Flickr < WEB.API.Common
             res.photo = struct2table(res.photo, 'AsArray', 1);
         end
         
-        function res = get_photo(~, T, size, varargin)
+        function res = get_photo(obj, id, varargin)
             %% Download Photo
-            url = T.source{strcmpi(T.label, size)};
-            res = webread(url);
+            params = {'id', 'required', id
+                'size', 'apiOption', 'thumbnail'
+                'show', 'apiOption', false
+                'save', 'apiOption', false
+                'name', 'apiOption', 'image.jpg'};
+            [~, apiopts] = obj.prepare_params(params, varargin);
+            sizes = obj.photos_getSizes(id);
+            i = strcmpi(apiopts.size, sizes.label);
+            if any(i)
+                res = webread(sizes.source{i});
+            else
+                error('API Error: "%s" size is not available. Try another size', apiopts.size);
+            end
+            if apiopts.show
+                P = WEB.Utils.Plotter();
+                P.image(res);
+            end
+            if apiopts.save
+                obj.storage.imsave(apiopts.name, res);
+            end
         end
         
     end

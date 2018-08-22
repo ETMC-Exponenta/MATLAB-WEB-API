@@ -1,10 +1,11 @@
 classdef BingMaps < WEB.API.Common
-    % Geocode class
+    % Bing Maps
+    % https://msdn.microsoft.com/en-us/library/ff701713.aspx
     
     properties
-        URL = "http://dev.virtualearth.net/REST/v1/" % base URL
+        URL = "http://dev.virtualearth.net/REST/v1/" % Base URL
         key % API Key
-        storage % Data storage
+        storage % Data Storage
     end
     
     methods
@@ -17,36 +18,6 @@ classdef BingMaps < WEB.API.Common
         function set_data_path(obj, path)
             %% Set auth data path
             obj.storage.path = path;
-        end
-        
-        function resCodes = get_geocode0(obj, locations)
-            %% Get location Geocode
-            gcodes = obj.load_gcodes();
-            locations = cellstr(locations);
-            n = length(locations);
-            resCodes = zeros(n, 2);
-            for i = 1 : n
-                loc = locations{i};
-                if isKey(gcodes, loc)
-                    gcode = gcodes(loc);
-                else
-                    fprintf(' %d/%d: getting geocode of %s\n', i, n, loc);
-                    res = obj.find_by_query(loc, 'maxResults', 1);
-                    if ~isempty(res)
-                        res = res.geocodePoints;
-                        if iscell(res)
-                            res = res{1};
-                        end
-                        gcode = res(1).coordinates;
-                    else
-                        warnig('WEB API: Location not found');
-                        gcode = [NaN NaN];
-                    end
-                    gcodes(loc) = gcode;
-                end
-                resCodes(i, :) = gcode;
-            end
-            obj.save_gcodes(gcodes);
         end
         
         function [res, apiopts] = call_api(obj, method, params, vars)
@@ -79,33 +50,22 @@ classdef BingMaps < WEB.API.Common
                 'useStorage', 'apiOption', 0
                 'plot', 'apiOption', 0};
             [~, apiopts] = obj.prepare_params(params, varargin);
+            geocode = [];
+            res = [];
             if apiopts.useStorage
-                geocode = obj.get_cm(query);
+                geocode = obj.storage.get_cm(query);
             end
-            res = obj.call_api(method, params, varargin);
-            geocode = obj.get_geocode(res);
+            if isempty(geocode)
+                res = obj.call_api(method, params, varargin);
+                geocode = obj.get_geocode(res);
+                if apiopts.useStorage
+                    obj.storage.set_cm(query, geocode);
+                    obj.storage.save();
+                end
+            end
             if apiopts.plot
                 obj.plot_geo(res, query);
             end
-        end
-        
-        function val = get_cm(obj, key)
-            %% Get from containers map
-            val = [];
-            cm = obj.storage.data;
-            if ~isempty(cm) && cm.isKey(key)
-                val = cm(key);
-            end
-        end
-        
-        function cm = set_cm(obj, key, val)
-            %% Get from containers map
-            cm = obj.storage.data;
-            if isempty(cm)
-                cm = containers.Map();
-            end
-            cm(key) = val;
-            obj.storage.data = cm;
         end
         
         function res = location_findByPoint(obj, point, varargin)
@@ -114,8 +74,7 @@ classdef BingMaps < WEB.API.Common
             method = "Locations/" + req.urlencode(point);
             params = {'includeEntityTypes', 'optional', ''
                 'incl', 'optional', ''
-                'inclnb', 'optional', 0
-                'useStorage', 'apiOption', 0};
+                'inclnb', 'optional', 0};
             res = obj.call_api(method, params, varargin);
         end
         
@@ -130,7 +89,6 @@ classdef BingMaps < WEB.API.Common
                 'includeNeighborhood', 'optional', 0
                 'include', 'optional', ''
                 'maxResults', 'optional', 10
-                'useStorage', 'apiOption', 0
                 'plot', 'apiOption', 0};
             [res, apiopts] = obj.call_api(method, params, varargin);
             geocode = obj.get_geocode(res);
@@ -140,7 +98,7 @@ classdef BingMaps < WEB.API.Common
         end
         
         function res = location_recognition(obj, point, varargin)
-            %% Find location by address
+            %% Recognise location
             req = WEB.API.Req();
             method = "LocationRecog/" + req.urlencode(point);
             params = {'radius', 'optional', 0.25
@@ -152,7 +110,7 @@ classdef BingMaps < WEB.API.Common
         end
         
         function res = imagery_staticMap(obj, imagerySet, query, varargin)
-            %% Find location by address
+            %% Get map image
             method = "Imagery/Map/" + imagerySet + "/";
             formats = struct('road', 'jpeg', 'aerial', 'jpeg', 'aerialwithlabels', 'jpeg',...
                 'collinsbart', 'png', 'ordnancesurvey', 'png');
@@ -174,12 +132,12 @@ classdef BingMaps < WEB.API.Common
             end            
             [res, apiopts] = obj.call_api(method, params, varargin);
             if apiopts.show
-                figure;
-                imshow(res);
+                P = WEB.Utils.Plotter();
+                P.image(res);
             end
             if apiopts.save
                 fmt = "." + formats.(lower(imagerySet));
-                imwrite(res, char(fullfile(obj.storage.path, apiopts.name + fmt)));
+                obj.storage.imsave(apiopts.name + fmt, res);
             end
         end
         
@@ -205,20 +163,6 @@ classdef BingMaps < WEB.API.Common
             end
         end
         
-        function gcodes = load_gcodes(obj)
-            %% Load geocodes from file
-            if isfile(obj.FNAME)
-                load(obj.FNAME, 'gcodes');
-            end
-            if ~exist('gcodes', 'var')
-                gcodes = containers.Map;
-            end
-        end
-        
-        function save_gcodes(obj, gcodes)
-            %% Save geocodes to file
-            save(obj.FNAME, 'gcodes');
-        end
     end
 end
 

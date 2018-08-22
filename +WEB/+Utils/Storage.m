@@ -1,10 +1,10 @@
 classdef Storage < handle
-    % Storage Class
+    % Data Storage Class
     
     properties
-        data % data
-        path % data path
-        file = 'data.mat' % data file
+        data % Data
+        path % Data Path
+        file = 'data.mat' % Data File Name
     end
     
     methods
@@ -69,6 +69,39 @@ classdef Storage < handle
             if isfile(obj.fullpath())
                 delete(obj.fullpath());
             end
+        end
+        
+        function val = get_cm(obj, key, cm)
+            %% Get from containers map
+            if nargin < 3
+                cm = obj.data;
+            end
+            val = [];
+            if ~isempty(cm) && cm.isKey(key)
+                val = cm(key);
+            end
+        end
+        
+        function cm = set_cm(obj, key, val, cm)
+            %% Set containers map value
+            if nargin < 4
+                cm = obj.data;
+            end
+            if isempty(cm)
+                cm = containers.Map();
+            end
+            cm(key) = val;
+            if nargin < 4
+                obj.data = cm;
+            end
+        end
+        
+        function imsave(obj, fname, im)
+            %% Save image
+            if nargin < 2
+                im = obj.data;
+            end
+            imwrite(im, fullfile(obj.path, char(fname)));
         end
         
     end

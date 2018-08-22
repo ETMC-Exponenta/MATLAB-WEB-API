@@ -3,12 +3,12 @@ classdef IP
     % http://ip-api.com
     
     properties
-        URL = 'http://ip-api.com/json/'
+        URL = 'http://ip-api.com/json/' % Base URL
     end
     
     methods
         function obj = IP()
-            %IPFY Construct an instance of this class
+            %IP Construct an instance of this class
         end
         
         function [info, addr] = get(obj, target, opt)

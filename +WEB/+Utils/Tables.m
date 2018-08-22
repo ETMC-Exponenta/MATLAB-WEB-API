@@ -6,7 +6,7 @@ classdef Tables
             % Tables Construct an instance of this class
         end
         
-        function ss = concat(obj, ss)
+        function ss = concat(obj, ss, preserveFormat)
             %% Fix VK Response
             if iscell(ss)
                 ss = ss(:);
@@ -19,7 +19,7 @@ classdef Tables
                 fs = unique(fs);
                 ss = obj.fill_empty(ss, fs);
                 ss = vertcat(ss{:});
-                if ist
+                if ist || nargin < 3 || ~preserveFormat
                     ss = struct2table(ss);
                 end
             end
@@ -90,7 +90,9 @@ classdef Tables
                 newf = f;
             end
             ist = istable(s);
-            if ist, s = table2struct(s); end
+            if ist
+                s = table2struct(s);
+            end
             if isfield(s, f)
                 vals = {s.(f)}';
                 isVal = ~cellfun('isempty', vals);
@@ -107,7 +109,9 @@ classdef Tables
         
         function t = rmvars(~, t, vars)
             %% Remove vars from table
-            if ~iscell(vars), vars = {vars}; end
+            if ~iscell(vars)
+                vars = {vars};
+            end
             isVar = ismember(vars, t.Properties.VariableNames);
             rmVar = vars(isVar);
             if ~isempty(rmVar)
@@ -124,7 +128,7 @@ classdef Tables
         end
         
         function t = count(~, vec, vname)
-            %% Count occurances in vector
+            %% Count occurences in vector
             vec = categorical(vec);
             t = table(categories(vec), countcats(vec), 'VariableNames', {vname, 'count'});
         end
