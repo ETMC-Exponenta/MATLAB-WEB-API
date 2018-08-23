@@ -1,5 +1,5 @@
 # MATLAB WEB API
-[English](https://github.com/ETMC-Exponenta/MATLAB-WEB-API/new/master?readme=1#description) | [Русский](https://github.com/ETMC-Exponenta/MATLAB-WEB-API/new/master?readme=1#%D0%9E%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5)
+[English](https://github.com/ETMC-Exponenta/MATLAB-WEB-API#description) | [Русский](https://github.com/ETMC-Exponenta/MATLAB-WEB-API#%D0%9E%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5)
 
 ## Description
 Framework for building handy WEB APIs to work with any WEB services from MATLAB
