@@ -1,6 +1,6 @@
-[English](#web-api-description) | [Русский](#Описание-web-api)
+[English](#web-api-description-gb) | [Русский](#Описание-web-api-ru)
 
-# WEB API Description
+# WEB API Description :gb:
 - **+API** - core WEB APIs components (WEB requests processing, authentication, API building)
 - **+Utils** - additional tools (data processing, visualization, etc.)
 ## Realized APIs
@@ -16,7 +16,7 @@
 - **Template.m** - New WEB API template :new_moon:
 - **VK.m** - Popular russian social network [VK.com](https://vk.com/dev/manuals) API :waning_crescent_moon:
 
-# Описание WEB API
+# Описание WEB API :ru:
 - **+API** - ключевые компоненты WEB API (создание и обработка запросов, авторизация, построение API)
 - **+Utils** - дополнительные библиотеки (обработка данных, визуализация и т.д.)
 ## Реализованные API
