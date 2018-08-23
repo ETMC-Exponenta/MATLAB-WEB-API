@@ -20,6 +20,12 @@ Framework for building handy WEB APIs to work with any WEB services from MATLAB
 
 **[Welcome aboard!](https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project) Together we will add more of services API and improve the existing.**
 
+#### Where to start
+Start with [examples](/examples).
+
+*Note: to work with some WEB Services you need to register and get access keys. See particular Service Developer documentation*
+
+
 ## Описание
 Фреймворк для создания удобных WEB API для работы с любыми WEB-сервисами из MATLAB
 #### Ключевые особенности:
@@ -38,3 +44,8 @@ Framework for building handy WEB APIs to work with any WEB services from MATLAB
 * [VK](https://vk.com/) - российская социальная сеть ![OAuth 2.0 logo](https://cdn-images-1.medium.com/max/16/0*QWNG5EAnPSaUSAHH.png "OAuth 2.0")
 
 **[Присоединяйтесь!](https://git-scm.com/book/ru/v2/GitHub-Внесение-собственного-вклада-в-проекты) Вместе мы добавим больше сервисов и улучшим работу с имеющимися.**
+
+#### Начало работы
+Начните с изучения [примеров](/examples).
+
+*Обратите внимание: для работы с некоторыми сервисами вам потребуется зарегистрироваться и получить ключи доступа. Изучайте документацию для разработчиков соответствующих сервисов*
