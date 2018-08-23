@@ -12,13 +12,13 @@
 
 ## [Auth](Auth.m)
 
-Этот класс позволяет добавить в WEB API поддержку авторизации OAuth 1.0 ([пример](./Flickr.m)) и OAuth 2.0 ([пример](./VK.m))
+Этот класс позволяет добавить в WEB API поддержку авторизации OAuth 1.0 ([пример](../Flickr.m)) и OAuth 2.0 ([пример](../VK.m))
 
 ## [Req](Req.m)
 
 Библиотека для создания и выполнения HTTP WEB запросов. Является более удобной альтернативой применению команд [webread](https://www.mathworks.com/help/matlab/ref/webread.html), [webwrite](https://www.mathworks.com/help/matlab/ref/webwrite.html).
 
-[Пример](../examples/req_example.m) использования.
+[Пример](../../examples/req_example.m) использования.
 
 #### Основные функции:
 - `seturl` - установить адрес запроса
