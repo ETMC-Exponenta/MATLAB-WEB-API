@@ -1,4 +1,4 @@
-[English](#WEB_API_Description) | [Русский](#Описание_WEB_API)
+[English](#web-api-description) | [Русский](#Описание-web-api)
 
 # WEB API Description
 - **+API** - core WEB APIs components (WEB requests processing, authentication, API building)
