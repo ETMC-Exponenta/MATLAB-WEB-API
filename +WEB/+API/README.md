@@ -1,6 +1,41 @@
-[English](#web-api-description-gb) | [Русский](#Описание-основных-компонентов-web-api)
+[English](#web-api-key-components-description-gb) | [Русский](#Описание-основных-компонентов-web-api-ru)
 
-# Описание основных компонентов WEB API
+# WEB API key components description :gb:
+
+Key components for any WEB API.
+
+## [Common](Common.m)
+
+Common class that any WEB API inherits. Contains methods required for API building:
+- **prepare_params** - preparing of WEB API method calling parameters
+- **extract** - extraction of data arrays from response
+
+## [Auth](Auth.m)
+
+Use this class to add to your WEB API OAuth 1.0 ([example](../Flickr.m)) and OAuth 2.0 ([example](../VK.m)) support.
+
+## [Req](Req.m)
+
+Library for HTTP WEB requests. More handy alternative to builtin [webread](https://www.mathworks.com/help/matlab/ref/webread.html) and [webwrite](https://www.mathworks.com/help/matlab/ref/webwrite.html).
+
+[Example](../../examples/req_example.m) of using.
+
+#### Main functions:
+- `seturl` - set request base URL
+- `addurl` - add method to request URL
+- `getfullurl` - get full URL with query parameters
+- `addquery` - add a query parameter
+- `addbody` - add body field
+- `addheader` - add header field
+- `setopts` - set request options (see [weboptions](https://www.mathworks.com/help/matlab/ref/weboptions.html))
+- `get`, `post`, `put`, `delete`, `patch` - perform request
+
+#### All functions:
+`doc WEB.API.Req`
+
+
+
+# Описание основных компонентов WEB API :ru:
 
 Ключевые компоненты для создания любого WEB API.
 
