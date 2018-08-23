@@ -1,5 +1,5 @@
 # MATLAB WEB API
-[English](#description) | [Русский](#описание)
+[English](#description) | [Русский](#Описание)
 
 ## Description
 Framework for building handy WEB APIs to work with any WEB services from MATLAB
