@@ -17,6 +17,7 @@
 * [HeadHunter](https://dev.hh.ru) - Russian Recruiting Service
 * [ip-api.com](http://ip-api.com) - IP Geolocation
 * [NetSuite](http://www.netsuite.com/portal/home.shtml) - CRM System ![OAuth logo](https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Oauth_logo.svg/16px-Oauth_logo.svg.png "OAuth 1.0")
+* [OpenWeatherMap](https://openweathermap.org/api) - Weather Service
 * [REST Countries](http://restcountries.eu) - Countries Information
 * [VK](https://vk.com/dev/manuals) - Russian Social Network ![OAuth 2.0 logo](https://cdn-images-1.medium.com/max/16/0*QWNG5EAnPSaUSAHH.png "OAuth 2.0")
 
@@ -35,6 +36,7 @@
 * [HeadHunter](https://dev.hh.ru) - сервис поиска работы
 * [ip-api.com](http://ip-api.com) - геолокация оп IP
 * [NetSuite](http://www.netsuite.com/portal/home.shtml) - CRM-система ![OAuth logo](https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Oauth_logo.svg/16px-Oauth_logo.svg.png "OAuth 1.0")
+* [OpenWeatherMap](https://openweathermap.org/api) - сервис погоды
 * [REST Countries](http://restcountries.eu) - информация о странах
 * [VK](https://vk.com/dev/manuals) - российская социальная сеть ![OAuth 2.0 logo](https://cdn-images-1.medium.com/max/16/0*QWNG5EAnPSaUSAHH.png "OAuth 2.0")
 
