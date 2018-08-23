@@ -1,11 +1,8 @@
 # MATLAB WEB API
-
-:gb: [Framework for building handy WEB APIs to work with any WEB services from MATLAB](https://github.com/ETMC-Exponenta/MATLAB-WEB-API/new/master?readme=1#description)
-
-:ru: [Фреймворк для создания удобных WEB API для работы с любыми WEB-сервисами из MATLAB](https://github.com/ETMC-Exponenta/MATLAB-WEB-API/new/master?readme=1#%D0%9E%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5)
+[English](https://github.com/ETMC-Exponenta/MATLAB-WEB-API/new/master?readme=1#description) | [Русский](https://github.com/ETMC-Exponenta/MATLAB-WEB-API/new/master?readme=1#%D0%9E%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5)
 
 ## Description
-
+Framework for building handy WEB APIs to work with any WEB services from MATLAB
 #### Key features:
 * Set of methods, templates and examples for quick creation of WEB API to work with any WEB service from MATLAB
 * Library to work with WEB requests
@@ -24,7 +21,7 @@
 **[Welcome aboard!](https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project) Together we will add more of services API and improve the existing.**
 
 ## Описание
-
+Фреймворк для создания удобных WEB API для работы с любыми WEB-сервисами из MATLAB
 #### Ключевые особенности:
 * Набор методов, шаблонов и примеров для быстрого создания WEB API для работы с любым WEB-сервисом из MATLAB
 * Библиотека для работы с WEB-запросами
