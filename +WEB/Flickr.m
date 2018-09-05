@@ -193,6 +193,7 @@ classdef Flickr < WEB.API.Common
             end
             if apiopts.show
                 P = WEB.Utils.Plotter();
+                figure;
                 P.image(res);
             end
             if apiopts.save
