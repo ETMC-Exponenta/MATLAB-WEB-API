@@ -19,6 +19,7 @@ classdef Plotter
             if ~iscategorical(color)
                 color = categorical(string(color));
             end
+            figure;
             g = geobubble(gc(:, 1), gc(:, 2), size, color);
             if ~isempty(p.Results.Title)
                 g.Title = p.Results.Title;
