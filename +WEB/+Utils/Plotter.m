@@ -31,11 +31,10 @@ classdef Plotter
             p.addRequired('im');
             p.addParameter('title', '');
             p.parse(im, varargin{:});
+            figure;
             image(im);
             ax = gca;
-            ax.Toolbar.Visible = 'on';
             ax.Visible = 'off';
-            removeToolbarExplorationButtons(gcf);
             if ~isempty(p.Results.title)
                 ax.Title = p.Results.title;
             end
