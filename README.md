@@ -13,15 +13,16 @@ Framework for building handy WEB APIs to work with any WEB services from MATLAB
 * Library to work with WEB requests
 * Support of OAuth 1.0, OAuth 2.0 access protocols
 #### At the moment, the work with services is partially done:
-* [Bing Maps](https://www.bing.com/maps) - Mapping Service
-* [Data.gov.ru](http://data.gov.ru/) - Open Data of Russian Federation
-* [Flickr](http://flickr.com/) - Photo Hosting ![OAuth logo](https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Oauth_logo.svg/16px-Oauth_logo.svg.png "OAuth 1.0")
-* [HeadHunter](http://hh.com/) - Russian Recruiting Service
-* [ip-api.com](http://ip-api.com) - IP Geolocation
-* [NetSuite](http://www.netsuite.com/portal/home.shtml) - CRM System ![OAuth logo](https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Oauth_logo.svg/16px-Oauth_logo.svg.png "OAuth 1.0")
-* [OpenWeatherMap](https://openweathermap.org/) - Weather Service
-* [REST Countries](http://restcountries.eu) - Countries Information
-* [VK](https://vk.com/) - Russian Social Network ![OAuth 2.0 logo](https://cdn-images-1.medium.com/max/16/0*QWNG5EAnPSaUSAHH.png "OAuth 2.0")
+* [Bing Maps](https://www.bing.com/maps) - Mapping service
+* [Data.gov.ru](http://data.gov.ru/) - Open data of Russian Federation
+* [Flickr](http://flickr.com/) - Photohosting ![OAuth logo](https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Oauth_logo.svg/16px-Oauth_logo.svg.png "OAuth 1.0")
+* [HeadHunter](http://hh.com/) - Russian recruiting service
+* [ip-api.com](http://ip-api.com) - IP geolocation
+* [NetSuite](http://www.netsuite.com/portal/home.shtml) - CRM system ![OAuth logo](https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Oauth_logo.svg/16px-Oauth_logo.svg.png "OAuth 1.0")
+* [OpenWeatherMap](https://openweathermap.org/) - Weather service
+* [REST Countries](http://restcountries.eu) - Countries information
+* [uinames.com](https://uinames.com/) - Random names generator
+* [VK](https://vk.com/) - Russian social network ![OAuth 2.0 logo](https://cdn-images-1.medium.com/max/16/0*QWNG5EAnPSaUSAHH.png "OAuth 2.0")
 
 **[Welcome aboard!](https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project) Together we will add more of services API and improve the existing.**
 
@@ -49,6 +50,7 @@ Start with [examples](/examples).
 * [NetSuite](http://www.netsuite.com/portal/home.shtml) - CRM-система ![OAuth logo](https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Oauth_logo.svg/16px-Oauth_logo.svg.png "OAuth 1.0")
 * [OpenWeatherMap](https://openweathermap.org/) - сервис погоды
 * [REST Countries](http://restcountries.eu) - информация о странах
+* [uinames.com](https://uinames.com/) - генератор случайных имён
 * [VK](https://vk.com/) - российская социальная сеть ![OAuth 2.0 logo](https://cdn-images-1.medium.com/max/16/0*QWNG5EAnPSaUSAHH.png "OAuth 2.0")
 
 **[Присоединяйтесь!](https://git-scm.com/book/ru/v2/GitHub-Внесение-собственного-вклада-в-проекты) Вместе мы добавим больше сервисов и улучшим работу с имеющимися.**

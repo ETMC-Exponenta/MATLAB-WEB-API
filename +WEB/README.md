@@ -14,6 +14,7 @@
 - **OpenWeatherMap.m** - [OpenWeatherMap](https://openweathermap.org/api) weather forecasting API :waning_crescent_moon: [(example)](../examples/openweathermap_example.m)
 - **RESTCountries.m** - [Countries](http://restcountries.eu/) information API :waning_gibbous_moon: [(example)](../examples/restcountries_example.m)
 - **Template.m** - New WEB API template :new_moon:
+- **Uinames.m** - Random names generator [uinames.com](https://uinames.com/) :waning_gibbous_moon: [(example)](../examples/uinames_example.m)
 - **VK.m** - Popular russian social network [VK.com](https://vk.com/dev/manuals) API :waning_crescent_moon: [(example)](../examples/vk_example.m)
 
 # Описание WEB API :ru:
@@ -30,4 +31,5 @@
 - **OpenWeatherMap.m** - API для работы с сервисом погоды [OpenWeatherMap](https://openweathermap.org/api) :waning_crescent_moon: [(пример)](../examples/openweathermap_example.m)
 - **RESTCountries.m** - API для получения подробной информации о [странах](http://restcountries.eu/) :waning_gibbous_moon: [(пример)](../examples/restcountries_example.m)
 - **Template.m** - Шаблон для создания нового WEB API :new_moon:
+- **Uinames.m** - Генератор случайных имён [uinames.com](https://uinames.com/) :waning_gibbous_moon: [(пример)](../examples/uinames_example.m)
 - **VK.m** - API для работы с популярной российской соцсетью [VK.com](https://vk.com/dev/manuals) :waning_crescent_moon: [(пример)](../examples/vk_example.m)
