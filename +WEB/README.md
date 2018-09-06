@@ -5,7 +5,7 @@
 - **+Utils** - additional tools (data processing, visualization, etc.)
 ## Realized APIs
 (*Rediness:* :new_moon: :waning_crescent_moon: :last_quarter_moon: :waning_gibbous_moon: :full_moon:)
-- **BingMaps.m** - [Bing Maps](https://msdn.microsoft.com/en-us/library/ff701713.aspx) mapping service API :waning_crescent_moon: [(example)](./examples/bingmaps_example.m)
+- **BingMaps.m** - [Bing Maps](https://msdn.microsoft.com/en-us/library/ff701713.aspx) mapping service API :waning_crescent_moon: [(example)](../examples/bingmaps_example.m)
 - **DataGov.m** - [Open Data of Russian Federation](https://data.gov.ru/pravila-i-rekomendacii) API :waning_gibbous_moon: [(example)](./examples/datagov_example.m)
 - **Flickr.m** - [Flickr.com](https://www.flickr.com/services/api) photo hosting API :waning_crescent_moon: [(example)](./examples/flickr_example.m)
 - **HeadHunter.m** - Russian recruiting service [hh.com](https://dev.hh.ru) API :waning_crescent_moon: [(example)](./examples/headhunter_example.m)

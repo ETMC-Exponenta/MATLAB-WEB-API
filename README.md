@@ -1,5 +1,6 @@
 # MATLAB WEB API
-![MATLAB WEB API Cover](../cover.png)
+![MATLAB WEB API Cover](/cover.png)
+
 [English](#description-gb) | [Русский](#Описание-ru)
 
 ## Description :gb:
