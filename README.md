@@ -32,7 +32,7 @@ Framework for building handy WEB APIs to work with any WEB services from MATLAB
 In MATLAB execute:
 ```matlab
 r = webread('https://api.github.com/repos/ETMC-Exponenta/MATLAB-WEB-API/releases/latest');
-websave(fullfile(fpath, r.assets.name), r.assets.browser_download_url);
+websave(r.assets.name, r.assets.browser_download_url);
 open(r.assets.name)
 ```
 #### 2nd approach (install from scratch)
@@ -98,7 +98,7 @@ WEB.API.Doc
 В MATLAB выполните:
 ```matlab
 r = webread('https://api.github.com/repos/ETMC-Exponenta/MATLAB-WEB-API/releases/latest');
-websave(fullfile(fpath, r.assets.name), r.assets.browser_download_url);
+websave(r.assets.name, r.assets.browser_download_url);
 open(r.assets.name)
 ```
 #### Способ 2 (установка с нуля)
