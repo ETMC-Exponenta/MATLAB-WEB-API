@@ -26,12 +26,49 @@ Framework for building handy WEB APIs to work with any WEB services from MATLAB
 
 **[Welcome aboard!](https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project) Together we will add more of services API and improve the existing.**
 
-## Where to start
-Start with [examples](/examples).
+## How to install
+### For use only
+#### 1st approach (install from scratch)
+In MATLAB execute:
+```matlab
+r = webread('https://api.github.com/repos/ETMC-Exponenta/MATLAB-WEB-API/releases/latest');
+websave(fullfile(fpath, r.assets.name), r.assets.browser_download_url);
+open(r.assets.name)
+```
+#### 2nd approach (install from scratch)
+* [Download project ZIP archive](https://github.com/ETMC-Exponenta/MATLAB-WEB-API/archive/master.zip)
+* Open **MATLAB.WEB.API.mltbx**
+#### 3rd approach (update installed)
+Check the current and latest versions:
+```matlab
+WEB.API.Ver
+```
+Update to the latest version:
+```matlab
+WEB.API.Update
+```
 
+### For development
+* Install [Git](https://git-scm.com/downloads)
+* [Learn](https://git-scm.com/book/en/v2/Getting-Started-Git-Basics) how to use Git
+* In OS command line execute:
+```bash
+git clone https://github.com/ETMC-Exponenta/MATLAB-WEB-API.git
+```
+
+## Where to start
+Start with [examples](/examples):
+```matlab
+WEB.API.Examples
+```
 *Note: to work with some WEB Services you need to register and get access keys. See particular Service Developer documentation*
 
+Examine documentation:
+```matlab
+WEB.API.Doc
+```
 
+---
 ## Описание :ru:
 Фреймворк для создания удобных WEB API для работы с любыми WEB-сервисами из MATLAB
 
@@ -55,7 +92,44 @@ Start with [examples](/examples).
 
 **[Присоединяйтесь!](https://git-scm.com/book/ru/v2/GitHub-Внесение-собственного-вклада-в-проекты) Вместе мы добавим больше сервисов и улучшим работу с имеющимися.**
 
-## С чего начать
-Начните с изучения [примеров](/examples).
+## Как установить
+### Только для использования
+#### Способ 1 (установка с нуля)
+В MATLAB выполните:
+```matlab
+r = webread('https://api.github.com/repos/ETMC-Exponenta/MATLAB-WEB-API/releases/latest');
+websave(fullfile(fpath, r.assets.name), r.assets.browser_download_url);
+open(r.assets.name)
+```
+#### Способ 2 (установка с нуля)
+* [Скачайте ZIP архив проекта](https://github.com/ETMC-Exponenta/MATLAB-WEB-API/archive/master.zip)
+* Откройте **MATLAB.WEB.API.mltbx**
+#### Способ 3 (обновление)
+Узнать текущую и последнюю версии:
+```matlab
+WEB.API.Ver
+```
+Обновление до последней версии:
+```matlab
+WEB.API.Update
+```
 
+### Для разработчиков
+* Установите [Git](https://git-scm.com/downloads)
+* [Изучите](https://git-scm.com/book/ru/v2/%D0%92%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5-%D0%9E%D1%81%D0%BD%D0%BE%D0%B2%D1%8B-Git) основы работы с Git
+* В командной строке ОС выполните:
+```bash
+git clone https://github.com/ETMC-Exponenta/MATLAB-WEB-API.git
+```
+
+## С чего начать
+Начните с изучения [примеров](/examples):
+```matlab
+WEB.API.Examples
+```
 *Обратите внимание: для работы с некоторыми сервисами вам потребуется зарегистрироваться и получить ключи доступа. Изучайте документацию для разработчиков соответствующих сервисов*
+
+Изучите документацию:
+```matlab
+WEB.API.Doc
+```
