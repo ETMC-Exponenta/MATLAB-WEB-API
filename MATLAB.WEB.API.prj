@@ -1,0 +1,157 @@
+<deployment-project plugin="plugin.toolbox" plugin-version="1.0">
+  <configuration file="D:\MATLAB\MATLAB-WEB-API\MATLAB.WEB.API.prj" location="D:\MATLAB\MATLAB-WEB-API" name="MATLAB.WEB.API" target="target.toolbox" target-name="Package Toolbox">
+    <param.appname>MATLAB WEB API</param.appname>
+    <param.authnamewatermark>Pavel Roslovets</param.authnamewatermark>
+    <param.email>roslovets@exponenta.ru</param.email>
+    <param.company>ETMC Exponenta</param.company>
+    <param.summary>Work with WEB services directly from MATLAB</param.summary>
+    <param.description>Work with existed WEB-services API or create your own.</param.description>
+    <param.screenshot>${PROJECT_ROOT}\doc\MATLAB-WEB-API.png</param.screenshot>
+    <param.version>0.2.0</param.version>
+    <param.output>${PROJECT_ROOT}\MATLAB WEB API.mltbx</param.output>
+    <param.products.name />
+    <param.products.id />
+    <param.products.version />
+    <param.platforms />
+    <param.guid>e1ede9a1-1cd1-42dd-9eac-9fdc38e9c880</param.guid>
+    <param.exclude.filters>% List files contained in your toolbox folder that you would like to exclude
+% from packaging.  Excludes should be listed relative to the toolbox folder.
+% Some examples of how to specify excludes are provided below:
+%
+% A single file in the toolbox folder:
+.git
+.github
+.gitignore
+work
+cover.png
+**/*.asv
+data/*_data*
+%
+% A single file in a subfolder of the toolbox folder:
+% example/.svn
+%
+% All files in a subfolder of the toolbox folder:
+% example/*
+%
+% All files of a certain name in all subfolders of the toolbox folder:
+% **/.svn
+%
+% All files matching a pattern in all subfolders of the toolbox folder:
+% **/*.bak
+%</param.exclude.filters>
+    <param.exclude.pcodedmfiles>true</param.exclude.pcodedmfiles>
+    <param.examples />
+    <param.demosxml />
+    <param.apps />
+    <param.registered.apps />
+    <param.docs>${PROJECT_ROOT}\info.xml</param.docs>
+    <param.getting.started.guide>${PROJECT_ROOT}\doc\GettingStarted.mlx</param.getting.started.guide>
+    <param.matlabpath.excludes />
+    <param.javaclasspath.excludes />
+    <param.exported.on.package>false</param.exported.on.package>
+    <param.release.start>R2014b</param.release.start>
+    <param.release.end>latest</param.release.end>
+    <param.release.current.only>false</param.release.current.only>
+    <param.compatiblity.windows>true</param.compatiblity.windows>
+    <param.compatiblity.macos>true</param.compatiblity.macos>
+    <param.compatiblity.linux>true</param.compatiblity.linux>
+    <param.compatiblity.matlabonline>true</param.compatiblity.matlabonline>
+    <unset>
+      <param.authnamewatermark />
+      <param.email />
+      <param.company />
+      <param.output />
+      <param.products.name />
+      <param.products.id />
+      <param.products.version />
+      <param.platforms />
+      <param.exclude.pcodedmfiles />
+      <param.examples />
+      <param.demosxml />
+      <param.apps />
+      <param.registered.apps />
+      <param.matlabpath.excludes />
+      <param.javaclasspath.excludes />
+      <param.exported.on.package />
+      <param.release.current.only />
+      <param.compatiblity.windows />
+      <param.compatiblity.macos />
+      <param.compatiblity.linux />
+      <param.compatiblity.matlabonline />
+    </unset>
+    <fileset.rootdir>
+      <file>D:\MATLAB\MATLAB-WEB-API</file>
+    </fileset.rootdir>
+    <fileset.rootfiles>
+      <file>${PROJECT_ROOT}\+WEB</file>
+      <file>${PROJECT_ROOT}\data</file>
+      <file>${PROJECT_ROOT}\doc</file>
+      <file>${PROJECT_ROOT}\examples</file>
+      <file>${PROJECT_ROOT}\info.xml</file>
+      <file>${PROJECT_ROOT}\README.md</file>
+    </fileset.rootfiles>
+    <fileset.depfun.included />
+    <fileset.depfun.excluded />
+    <fileset.package />
+    <build-deliverables>
+      <file location="D:\MATLAB\MATLAB-WEB-API" name="MATLAB WEB API.mltbx" optional="false">D:\MATLAB\MATLAB-WEB-API\MATLAB WEB API.mltbx</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>C:\Program Files\MATLAB\R2018a</root>
+      <toolboxes>
+        <toolbox name="fixedpoint" />
+        <toolbox name="matlabcoder" />
+        <toolbox name="matlabhdlcoder" />
+        <toolbox name="embeddedcoder" />
+        <toolbox name="gpucoder" />
+        <toolbox name="polyspacebugfinder" />
+      </toolboxes>
+      <toolbox>
+        <fixedpoint>
+          <enabled>true</enabled>
+        </fixedpoint>
+      </toolbox>
+      <toolbox>
+        <matlabcoder>
+          <enabled>true</enabled>
+        </matlabcoder>
+      </toolbox>
+      <toolbox>
+        <matlabhdlcoder>
+          <enabled>true</enabled>
+        </matlabhdlcoder>
+      </toolbox>
+      <toolbox>
+        <embeddedcoder>
+          <enabled>true</enabled>
+        </embeddedcoder>
+      </toolbox>
+      <toolbox>
+        <gpucoder>
+          <enabled>true</enabled>
+        </gpucoder>
+      </toolbox>
+      <toolbox>
+        <polyspacebugfinder>
+          <enabled>true</enabled>
+        </polyspacebugfinder>
+      </toolbox>
+    </matlab>
+    <platform>
+      <unix>false</unix>
+      <mac>false</mac>
+      <windows>true</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>false</linux>
+      <solaris>false</solaris>
+      <osver>10.0</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>win64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>

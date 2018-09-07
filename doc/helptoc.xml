@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding="utf-8"?>
+
+<toc version="2.0">
+<!-- First tocitem specifies top level in Help browser Contents pane -->
+<!-- This can be a roadmap page, as shown below, or a content page -->
+    <tocitem target="GettingStarted.html">MATLAB WEB API
+        <!-- Nest tocitems to create hierarchical entries in  Contents-->
+        <!-- To include icons, use the following syntax for tocitems: -->
+        <!-- <tocitem target="foo.html" image="HelpIcon.NAME"> -->
+        <!-- Title-of-Section </tocitem> -->
+        <!-- where NAME is one of the following (use capital letters): -->
+        <!-- FUNCTION, USER_GUIDE, EXAMPLES, BLOCK, GETTING_STARTED, -->
+        <!-- DEMOS, RELEASE_NOTES --> 
+        <!-- Icon images used for these entries are also stored in -->
+        <!-- matlabroot/toolbox/matlab/icons -->
+        <!-- A Getting Started Guide usually comes first -->
+        <!-- User Guide comes next -->
+        <!-- Function reference next -->
+        <!-- First item is page describing function categories, if any -->
+        <tocitem target="Reference.html" 
+                 image="HelpIcon.FUNCTION">
+                 Reference
+            <tocitem target="WebApi.html">WEB.API</tocitem>
+            <tocitem target="WebUtils.html">WEB.Utils</tocitem>
+        </tocitem>
+        <tocitem target="Examples.html" 
+                 image="HelpIcon.HelpIcon.EXAMPLES">Examples
+        </tocitem>
+        <!-- Optional link or links to your or other Web sites -->
+        <tocitem target="https://www.mathworks.com/matlabcentral/fileexchange/68611" 
+                 image="$toolbox/matlab/icons/webicon.gif">
+        MATLAB WEB API on File Exchange
+        </tocitem>
+        <tocitem target="https://github.com/ETMC-Exponenta/MATLAB-WEB-API" 
+                 image="$toolbox/matlab/icons/webicon.gif">
+        MATLAB WEB API on GitHub
+        </tocitem>
+    </tocitem>
+</toc>

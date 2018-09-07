@@ -1,6 +1,4 @@
-%% Add project directory to path
-addpath('../')
-%% Create IP API object
+%% Create service object
 ip = WEB.IP();
 %% Get my IP info
 [info, addr] = ip.get()

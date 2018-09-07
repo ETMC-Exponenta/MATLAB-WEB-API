@@ -1,8 +1,8 @@
-%% Add project directory to path
-addpath('../')
-%% Set up Bing Maps API
+%% Set auth data
 api_key = '...'; % place here your API Key
+%% Create service object
 bm = WEB.BingMaps(api_key);
+%% Set data path
 bm.set_data_path('../data/');
 %% Get location geocode
 [res, gcode] = bm.location_findByQuery('moscow', 'maxResults', 1, 'useStorage', 1)

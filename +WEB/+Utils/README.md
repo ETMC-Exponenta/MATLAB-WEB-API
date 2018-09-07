@@ -36,4 +36,4 @@ Additional functions for more convinient work with [tables](https://www.mathwork
 
 ## [Tables](Tables.m)
 
-Дополнительные функции для более удобной работы с [таблицами](https://www.mathworks.com/help/search.html).
+Дополнительные функции для более удобной работы с [таблицами](https://www.mathworks.com/help/matlab/tables.html).

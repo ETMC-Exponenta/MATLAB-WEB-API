@@ -1,7 +1,6 @@
-%% Add project directory to path
-addpath('../')
-%% Set up HH API
+%% Set auth data
 access_token = '...';  % place here your Access Token
+%% Create service object
 hh = WEB.HeadHunter(access_token);
 %% Get info about me
 res = hh.me()

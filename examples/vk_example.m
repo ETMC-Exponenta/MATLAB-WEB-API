@@ -1,12 +1,12 @@
-%% Add project directory to path
-addpath('../')
-%% Set up VK API
+%% Set auth data
 client_id = '...';      % place here your Client ID
 client_secret = '...';  % place here your Client Secret
 scope = 'all';
 % scope = 140492255 % all
 % scope = {'friends', 'pages', 'groups', 'wall'}; % selective scope
+%% Create service object
 vk = WEB.VK(client_id, scope, client_secret);
+%% Set data path
 vk.set_data_path('../data/');
 %% Login to VK.com
 vk.login()

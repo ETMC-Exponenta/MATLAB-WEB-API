@@ -1,7 +1,6 @@
-%% Add project directory to path
-addpath('../')
-%% Set up Bing Maps API
+%% Set auth data
 api_key = '...'; % place here your API Key
+%% Create service object
 owm = WEB.OpenWeatherMap(api_key);
 %% Get current weather by query
 res = owm.current('q', 'moscow,ru', 'units', 'metric')

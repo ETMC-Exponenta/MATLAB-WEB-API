@@ -1,7 +1,6 @@
-%% Add project directory to path
-addpath('../')
-%% Set up DataGov API
+%% Set auth data
 api_key = '...'; % place here your API Key
+%% Create service object
 dg = WEB.DataGov(api_key);
 %% Get main page
 res = dg.main()

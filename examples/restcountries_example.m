@@ -1,6 +1,4 @@
-%% Add project directory to path
-addpath('../')
-%% Create REST Countries API object
+%% Create service object
 rc = WEB.RESTCountries();
 %% Get all info
 res = rc.all()

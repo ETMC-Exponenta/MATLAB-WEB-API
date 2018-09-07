@@ -1,9 +1,9 @@
-%% Add project directory to path
-addpath('../')
-%% Set up Flickr API
+%% Set auth data
 app_key = '...';  % place here your App Key
 app_secret = '...';  % place here your App Secret
+%% Create service object
 fl = WEB.Flickr(app_key, app_secret);
+%% Set data path
 fl.set_data_path('../data/');
 %% Get Token
 res = fl.login()

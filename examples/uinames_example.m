@@ -1,6 +1,4 @@
-%% Add project directory to path
-addpath('../')
-%% Create Uinames API object
+%% Create service object
 uin = WEB.Uinames();
 %% Get random name
 res = uin.get()
