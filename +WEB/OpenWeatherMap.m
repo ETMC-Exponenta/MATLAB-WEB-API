@@ -51,7 +51,8 @@ classdef OpenWeatherMap < WEB.API.Common
                 'units', 'optional', 'default'
                 'show', 'apiOption', false};
             [res, apiopts] = obj.call_api(method, params, varargin);
-            data = struct2table(res.list);
+            TU = WEB.Utils.Tables;
+            data = TU.concat(res.list);
             data.dt = datetime(data.dt, 'ConvertFrom', 'posixtime');
             if apiopts.show
                 obj.plot_data(data);
