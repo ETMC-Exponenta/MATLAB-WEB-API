@@ -75,6 +75,7 @@ classdef VK < WEB.API.Common
                 addRes = res;
                 offset = 0;
                 while ~isempty(addRes)
+                    pause(0.3);
                     offset = offset + 1000;
                     req.addquery('offset', offset);
                     addRes = get(req);
