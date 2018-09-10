@@ -119,7 +119,7 @@ classdef Tables
             end
         end
         
-        function t = ordervars(~, t, vnames)
+        function t = selectvars(~, t, vnames)
             %% Order variables
             if isa(vnames, 'containers.Map')
                 vnames = keys(vnames);
