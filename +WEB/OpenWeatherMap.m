@@ -53,6 +53,9 @@ classdef OpenWeatherMap < WEB.API.Common
             [res, apiopts] = obj.call_api(method, params, varargin);
             TU = WEB.Utils.Tables;
             data = TU.concat(res.list);
+            if isstruct(data)
+                data = struct2table(data, 'AsArray', true);
+            end
             data.dt = datetime(data.dt, 'ConvertFrom', 'posixtime');
             if apiopts.show
                 obj.plot_data(data);
@@ -73,7 +76,7 @@ classdef OpenWeatherMap < WEB.API.Common
             %% Plot weather forecast
             figure;
             % Plot weather
-            subplot(7, 1, 1)
+            subplot(8, 1, 1)
             icons = {data.weather.icon};
             uicons = unique(icons);
             cm = containers.Map;
@@ -88,7 +91,7 @@ classdef OpenWeatherMap < WEB.API.Common
             imshow(w)
             title('Weather')
             % Plot temperature
-            subplot(7, 1, [2 4])
+            subplot(8, 1, [2 4])
             plot(data.dt, [data.main.temp]);
             hold on
             plot(data.dt, [data.main.temp_min], 'b:');
@@ -97,7 +100,7 @@ classdef OpenWeatherMap < WEB.API.Common
             title('Temperature');
             grid on
             % Plot humidity
-            subplot(7, 1, [5 7])
+            subplot(8, 1, [6 8])
             plot(data.dt, [data.main.humidity]);
             title('Humidity');
             grid on
