@@ -6,4 +6,6 @@ dpath = tempname;
 mkdir(dpath);
 fpath = fullfile(dpath, r.assets.name);
 websave(fpath, r.assets.browser_download_url);
-open(fpath)
+res = matlab.addons.install(fpath);
+fprintf('%s v%s has been installed\n', res.Name{1}, res.Version{1});
+delete(fpath);
