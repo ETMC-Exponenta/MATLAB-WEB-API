@@ -7,7 +7,7 @@
     <param.summary>Work with WEB services directly from MATLAB</param.summary>
     <param.description>Work with existed WEB-services API or create your own.</param.description>
     <param.screenshot>${PROJECT_ROOT}\doc\MATLAB-WEB-API.png</param.screenshot>
-    <param.version>0.2.2</param.version>
+    <param.version>0.2.3</param.version>
     <param.output>${PROJECT_ROOT}\MATLAB WEB API.mltbx</param.output>
     <param.products.name />
     <param.products.id />
@@ -110,8 +110,51 @@ data/*_data*
     </build-deliverables>
     <workflow />
     <matlab>
-      <root>D:\Program Files\MATLAB\R2018b</root>
-      <toolboxes />
+      <root>C:\Program Files\MATLAB\R2018b</root>
+      <toolboxes>
+        <toolbox name="matlabcoder" />
+        <toolbox name="embeddedcoder" />
+        <toolbox name="gpucoder" />
+        <toolbox name="fixedpoint" />
+        <toolbox name="matlabhdlcoder" />
+        <toolbox name="polyspacebugfinder" />
+        <toolbox name="neuralnetwork" />
+      </toolboxes>
+      <toolbox>
+        <matlabcoder>
+          <enabled>true</enabled>
+        </matlabcoder>
+      </toolbox>
+      <toolbox>
+        <embeddedcoder>
+          <enabled>true</enabled>
+        </embeddedcoder>
+      </toolbox>
+      <toolbox>
+        <gpucoder>
+          <enabled>true</enabled>
+        </gpucoder>
+      </toolbox>
+      <toolbox>
+        <fixedpoint>
+          <enabled>true</enabled>
+        </fixedpoint>
+      </toolbox>
+      <toolbox>
+        <matlabhdlcoder>
+          <enabled>true</enabled>
+        </matlabhdlcoder>
+      </toolbox>
+      <toolbox>
+        <polyspacebugfinder>
+          <enabled>true</enabled>
+        </polyspacebugfinder>
+      </toolbox>
+      <toolbox>
+        <neuralnetwork>
+          <enabled>true</enabled>
+        </neuralnetwork>
+      </toolbox>
     </matlab>
     <platform>
       <unix>false</unix>
