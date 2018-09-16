@@ -9,5 +9,5 @@ end
 commitcmd = sprintf('git commit -m v%s', v);
 system('git add .');
 system(commitcmd);
-system('git push')
+system('git push');
 fprintf('MATLAB WEB API v%s has been pushed\n', v);
