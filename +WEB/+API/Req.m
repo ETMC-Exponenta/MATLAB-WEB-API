@@ -219,7 +219,7 @@ classdef Req < handle
             err = false;
             resp = [];
             try
-                resp = webwrite(obj.getfullurl(), obj.body, obj.opts);
+                resp = webwrite(obj.getfullurl(), obj.getstruct(obj.body), obj.opts);
             catch e
                 err = e.message;
             end
@@ -229,9 +229,9 @@ classdef Req < handle
             %% Perform PUT request
             err = false;
             resp = [];
+            obj.opts.RequestMethod = 'put';
             try
-                obj.opts.RequestMethod = 'put';
-                resp = webwrite(obj.getfullurl(), obj.body, obj.opts);
+                resp = webwrite(obj.getfullurl(), obj.getstruct(obj.body), obj.opts);
             catch e
                 err = e.message;
             end
@@ -241,9 +241,9 @@ classdef Req < handle
             %% Perform DELETE request
             err = false;
             resp = [];
+            obj.opts.RequestMethod = 'delete';
             try
-                obj.opts.RequestMethod = 'delete';
-                resp = webwrite(obj.getfullurl(), obj.body, obj.opts);
+                resp = webwrite(obj.getfullurl(), obj.getstruct(obj.body), obj.opts);
             catch e
                 err = e.message;
             end
@@ -253,9 +253,9 @@ classdef Req < handle
             %% Perform PATCH request
             err = false;
             resp = [];
+            obj.opts.RequestMethod = 'patch';
             try
-                obj.opts.RequestMethod = 'patch';
-                resp = webwrite(obj.getfullurl, obj.body, obj.opts);
+                resp = webwrite(obj.getfullurl, obj.getstruct(obj.body), obj.opts);
             catch e
                 err = e.message;
             end
@@ -297,6 +297,16 @@ classdef Req < handle
                     end
                 end
                 h = T;
+            end
+        end
+        
+        function data = getstruct(~, data)
+            %% convert data to struct
+            if istable(data)
+                for i = 1 : height(data)
+                    s.(char(data{i, 1})) = data{i, 2};
+                end
+                data = s;
             end
         end
         
