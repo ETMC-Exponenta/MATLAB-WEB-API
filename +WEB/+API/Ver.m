@@ -1,4 +1,4 @@
-function Ver
+function varargout = Ver
 % Get local version
 name = 'MATLAB WEB API';
 tbx = matlab.addons.toolbox.installedToolboxes;
@@ -20,4 +20,13 @@ if isequal(v, vl)
 else
     fprintf('* Update is available: %s->%s *\n', v, vl);
     fprintf('To update run command: WEB.API.Update\n');
+end
+if nargout > 0
+    varargout{1} = v;
+end
+if nargout > 1
+    varargout{2} = vl;
+end
+if nargout > 2
+    varargout{3} = r;
 end
