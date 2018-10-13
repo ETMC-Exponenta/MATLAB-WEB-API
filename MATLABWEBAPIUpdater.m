@@ -321,7 +321,7 @@ classdef MATLABWEBAPIUpdater < handle
                 obj.build();
             end
             obj.push();
-            obj.commit();
+            obj.tag();
         end
         
         function echo(obj, msg)
