@@ -235,7 +235,7 @@ classdef MATLABWEBAPIUpdater < handle
             % Read config from xml file
             confname = 'ToolboxConfig.xml';
             confpath = fullfile(obj.root, confname);
-            ok = isfile(confname);
+            ok = isfile(confpath);
             if ok
                 xml = xmlread(confpath);
                 conf = obj.getxmlitem(xml, 'config', 0);
@@ -309,7 +309,7 @@ classdef MATLABWEBAPIUpdater < handle
             % Tag git project and push tag
             tagcmd = sprintf('git tag -a v%s -m v%s', obj.pv, obj.pv);
             system(tagcmd);
-            system('git push --tags')
+            system('git push --tags');
             obj.echo('has been tagged');
         end
         

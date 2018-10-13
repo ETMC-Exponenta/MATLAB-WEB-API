@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
-  <configuration file="D:\MATLAB\MATLAB-WEB-API\MATLAB.WEB.API.prj" location="D:\MATLAB\MATLAB-WEB-API" name="MATLAB.WEB.API" target="target.toolbox" target-name="Package Toolbox">
+  <configuration file="D:\MATLAB\MATLAB-WEB-API\MATLAB-WEB-API.prj" location="D:\MATLAB\MATLAB-WEB-API" name="MATLAB-WEB-API" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>MATLAB WEB API</param.appname>
     <param.authnamewatermark>Pavel Roslovets</param.authnamewatermark>
     <param.email>roslovets@exponenta.ru</param.email>
