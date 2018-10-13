@@ -26,6 +26,7 @@ work
 cover.png
 **/*.asv
 data/*_data*
+dev_on.m
 %
 % A single file in a subfolder of the toolbox folder:
 % example/.svn
@@ -100,7 +101,9 @@ data/*_data*
       <file>${PROJECT_ROOT}\doc</file>
       <file>${PROJECT_ROOT}\examples</file>
       <file>${PROJECT_ROOT}\info.xml</file>
+      <file>${PROJECT_ROOT}\MATLABWEBAPIUpdater.m</file>
       <file>${PROJECT_ROOT}\README.md</file>
+      <file>${PROJECT_ROOT}\ToolboxConfig.xml</file>
     </fileset.rootfiles>
     <fileset.depfun.included />
     <fileset.depfun.excluded />

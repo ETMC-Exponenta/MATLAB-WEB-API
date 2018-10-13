@@ -1,2 +1,3 @@
 function Doc
-web(fullfile(fileparts(mfilename('fullpath')), '..', '..', 'doc', 'GettingStarted.html'));
+updater = MATLABWEBAPIUpdater;
+updater.doc();

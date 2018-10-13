@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+   <name>MATLAB WEB API</name>
+   <pname>MATLAB.WEB.API.prj</pname>
+   <remote>https://github.com/ETMC-Exponenta/MATLAB-WEB-API</remote>
+   <updaterv>0.1</updaterv>
+</config>
+<!--MATLABWEBAPIUpdater configuration file-->

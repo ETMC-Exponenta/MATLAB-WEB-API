@@ -1,2 +1,3 @@
 function Examples
-cd(fullfile(fileparts(mfilename('fullpath')), '..', '..', 'examples'));
+updater = MATLABWEBAPIUpdater;
+updater.examples();
