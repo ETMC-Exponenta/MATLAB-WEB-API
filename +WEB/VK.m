@@ -7,7 +7,7 @@ classdef VK < WEB.API.Common
         client_id % Client ID
         client_secret % Client Secret
         scope % Scope
-        ver = '5.8' % API Version
+        ver = '5.85' % API Version
         authdata % Authentication Data
     end
     
@@ -187,6 +187,20 @@ classdef VK < WEB.API.Common
             [res, count] = obj.call_api(method, params, varargin);
         end
         
+        function [res, count] = groups_getById(obj, id, fields, varargin)
+            %% Search groups
+            method = 'groups.getById';
+            params = {'id', 'required', id
+                'fields', 'required', fields
+                'extract', 'apiOption', true};
+            if isscalar(id)
+                params{1, 1} = 'group_id';
+            else
+                params{1, 1} = 'group_ids';
+            end                
+            [res, count] = obj.call_api(method, params, varargin);
+        end
+        
         function [res, count] = users_getFollowers(obj, user_id, varargin)
             %% Get user followers
             method = 'users.getFollowers';
@@ -213,11 +227,12 @@ classdef VK < WEB.API.Common
             [res, count] = obj.call_api(method, params, varargin);
         end
         
-        function res = wall_post(obj, owner_id, message, varargin)
+        function res = wall_post(obj, owner_id, varargin)
             %% Post on wall
             method = 'wall.post';
             params = {'owner_id', 'required', owner_id
-                'message', 'required', message
+                'message', 'optional', ''
+                'attachments', 'optional', ''
                 'friends_only', 'optional', 0};
             res = obj.call_api(method, params, varargin);
         end
