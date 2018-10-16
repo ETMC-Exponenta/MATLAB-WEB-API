@@ -293,7 +293,7 @@ classdef MATLABWEBAPIUpdater < handle
             obj.seticons();
             name = strrep(obj.name, ' ', '-');
             matlab.addons.toolbox.packageToolbox(ppath, name);
-            obj.echo('has been deployed');
+            obj.echo('has been built');
         end
         
         function push(obj)
@@ -313,6 +313,16 @@ classdef MATLABWEBAPIUpdater < handle
             obj.echo('has been tagged');
         end
         
+        function untag(obj, v)
+            % Delete tag from local and remote
+            untagcmd1 = sprintf('git push --delete origin v%s', v);
+            untagcmd2 = sprintf('git tag -d v%s', v);
+            system(untagcmd1);
+            system(untagcmd2);
+            system('git push --tags');
+            obj.echo('has been untagged');
+        end
+        
         function deploy(obj, pv)
             % Build toolbox, push and tag version
             if nargin > 1
@@ -322,6 +332,7 @@ classdef MATLABWEBAPIUpdater < handle
             end
             obj.push();
             obj.tag();
+            obj.echo('has been deployed');
         end
         
         function echo(obj, msg)
