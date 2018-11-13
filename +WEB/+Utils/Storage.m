@@ -3,7 +3,7 @@ classdef Storage < handle
     
     properties
         data % Data
-        path % Data Path
+        path = '' % Data Path
         file = 'data.mat' % Data File Name
     end
     
@@ -26,6 +26,17 @@ classdef Storage < handle
         function path = get.path(obj)
             %% Get path
             path = obj.path;
+        end
+        
+        function file = get.file(obj)
+            %% Get file name
+            file = obj.file;
+        end
+        
+        function set.file(obj, file)
+            %% Set file name
+            obj.file = file;
+            obj.load();
         end
         
         function data = get.data(obj)
