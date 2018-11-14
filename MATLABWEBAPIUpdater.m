@@ -5,6 +5,7 @@ classdef MATLABWEBAPIUpdater < handle
     properties
         name % project name
         pname % name of project file
+        ptype % type of project
         remote % GitHub link
         pv % project version
         cv % current installed version
@@ -23,6 +24,7 @@ classdef MATLABWEBAPIUpdater < handle
             end
             if ~obj.readconfig()
                 obj.getpname();
+                obj.getptype();
                 obj.getname();
                 obj.getremote();
             end
@@ -58,6 +60,20 @@ classdef MATLABWEBAPIUpdater < handle
             else
                 error('Project file was not found in a current folder');
             end
+        end
+        
+        function ptype = getptype(obj)
+            % Get project type (Toolbox/App)
+            ppath = fullfile(obj.root, obj.pname);
+            txt = obj.readtxt(ppath);
+            if contains(txt, 'plugin.toolbox')
+                ptype = 'toolbox';
+            elseif contains(txt, 'plugin.apptool')
+                ptype = 'app';
+            else
+                ptype = '';
+            end
+            obj.ptype = ptype;
         end
         
         function remote = getremote(obj)
@@ -96,7 +112,12 @@ classdef MATLABWEBAPIUpdater < handle
             % Get project version
             ppath = fullfile(obj.root, obj.pname);
             if isfile(ppath)
-                pv = matlab.addons.toolbox.toolboxVersion(ppath);
+                if obj.ptype == "toolbox"
+                    pv = matlab.addons.toolbox.toolboxVersion(ppath);
+                else
+                    txt = obj.readtxt(ppath);
+                    pv = char(regexp(txt, '(?<=(<param.version>))(.*?)(?=(</param.version>))', 'match'));
+                end
             else
                 pv = '';
             end
@@ -105,13 +126,18 @@ classdef MATLABWEBAPIUpdater < handle
         
         function cv = gcv(obj)
             % Get current installed version
-            tbx = matlab.addons.toolbox.installedToolboxes;
-            tbx = struct2table(tbx, 'AsArray', true);
-            idx = strcmp(tbx.Name, obj.name);
-            cv = tbx.Version(idx);
-            if isscalar(cv)
-                cv = char(cv);
-            elseif isempty(cv)
+            if obj.ptype == "toolbox"
+                tbx = matlab.addons.toolbox.installedToolboxes;
+                tbx = struct2table(tbx, 'AsArray', true);
+                idx = strcmp(tbx.Name, obj.name);
+                cv = tbx.Version(idx);
+                if isscalar(cv)
+                    cv = char(cv);
+                elseif isempty(cv)
+                    cv = '';
+                end
+            else
+                tbx = matlab.apputil.getInstalledAppInfo;
                 cv = '';
             end
             obj.cv = cv;
@@ -179,7 +205,11 @@ classdef MATLABWEBAPIUpdater < handle
             mkdir(dpath);
             fpath = fullfile(dpath, r.assets.name);
             websave(fpath, r.assets.browser_download_url);
-            res = matlab.addons.install(fpath);
+            if obj.ptype == "toolbox"
+                res = matlab.addons.install(fpath);
+            else
+                res = matlab.apputil.install(fpath);
+            end
             fprintf('%s v%s has been installed\n', res.Name{1}, res.Version{1});
             delete(fpath);
         end
@@ -241,6 +271,7 @@ classdef MATLABWEBAPIUpdater < handle
                 conf = obj.getxmlitem(xml, 'config', 0);
                 obj.name = obj.getxmlitem(conf, 'name');
                 obj.pname = obj.getxmlitem(conf, 'pname');
+                obj.ptype = obj.getxmlitem(conf, 'ptype');
                 obj.remote = erase(obj.getxmlitem(conf, 'remote'), '.git');
                 obj.updaterv = obj.getxmlitem(conf, 'updaterv');
             end
@@ -252,6 +283,7 @@ classdef MATLABWEBAPIUpdater < handle
             docNode.appendChild(docNode.createComment('MATLABWEBAPIUpdater configuration file'));
             obj.addxmlitem(docNode, 'name', obj.name);
             obj.addxmlitem(docNode, 'pname', obj.pname);
+            obj.addxmlitem(docNode, 'ptype', obj.ptype);
             obj.addxmlitem(docNode, 'remote', obj.remote);
             obj.addxmlitem(docNode, 'updaterv', obj.updaterv);
             confname = 'ToolboxConfig.xml';
@@ -287,12 +319,23 @@ classdef MATLABWEBAPIUpdater < handle
             % Build toolbox for specified version
             ppath = fullfile(obj.root, obj.pname);
             if nargin > 1
-                matlab.addons.toolbox.toolboxVersion(ppath, pv);
+                if obj.ptype == "toolbox"
+                    matlab.addons.toolbox.toolboxVersion(ppath, pv);
+                else
+                    txt = obj.readtxt(ppath);
+                    txt = regexprep(txt, '(?<=(<param.version>))(.*?)(?=(</param.version>))', pv);
+                    txt = strrep(txt, '<param.version />', '');
+                    obj.writetxt(txt, ppath);
+                end
                 obj.pv = pv;
             end
-            obj.seticons();
-            name = strrep(obj.name, ' ', '-');
-            matlab.addons.toolbox.packageToolbox(ppath, name);
+            if obj.ptype == "toolbox"
+                obj.seticons();
+                name = strrep(obj.name, ' ', '-');
+                matlab.addons.toolbox.packageToolbox(ppath, name);
+            else
+                matlab.apputil.package(ppath);
+            end
             obj.echo('has been built');
         end
         
@@ -355,7 +398,7 @@ classdef MATLABWEBAPIUpdater < handle
                 end
             end
         end
-            
+        
     end
 end
 
