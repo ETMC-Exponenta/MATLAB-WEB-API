@@ -107,9 +107,24 @@ classdef Req < handle
             end
         end
         
-        function body = setbody(obj, body)
+        function body = setbody(obj, body, asTable)
             %% Set body
-            obj.body = body;
+            if nargin < 3
+                asTable = false;
+            end
+            if isempty(body)
+                obj.clearbody();
+            else
+                if isstruct(body) && asTable
+                    obj.clearbody();
+                    for f = fieldnames(body)'
+                        obj.addbody(f{1}, body.(f{1}));
+                    end
+                else
+                    obj.body = body;
+                end
+            end
+            body = obj.body;
         end
         
         function body = addbody(obj, name, value)
@@ -219,7 +234,14 @@ classdef Req < handle
             err = false;
             resp = [];
             try
-                resp = webwrite(obj.getfullurl(), obj.getstruct(obj.body), obj.opts);
+                if obj.opts.MediaType == "application/x-www-form-urlencoded"
+                    form = table2cell(obj.body)';
+                    fp = matlab.net.http.io.MultipartFormProvider(form{:});
+                    req = matlab.net.http.RequestMessage('post', [], fp);
+                    resp = req.send(obj.getfullurl());
+                else
+                    resp = webwrite(obj.getfullurl(), obj.getstruct(obj.body), obj.opts);
+                end
             catch e
                 err = e.message;
             end
