@@ -47,7 +47,7 @@ classdef VK < WEB.API.Common
             end
         end
         
-        function [res, count] = call_api(obj, method, params, vars)
+        function [res, count, err] = call_api(obj, method, params, vars)
             %% Call VK API
             [params, apiopts] = obj.prepare_params(params, vars);
             if isfield(apiopts, 'getAll')
@@ -57,13 +57,25 @@ classdef VK < WEB.API.Common
             end
             req = WEB.API.Req(obj.URL);
             req.addurl(method);
-            req.setquery(params);
-            req.addquery('v', obj.ver);
-            req.setopts('ContentType', 'json');
-            req.setopts('Timeout', 15);
-            A = WEB.API.Auth(req, obj.authdata.data);
-            req = A.oauth20();
-            res = get(req);
+            if method == "wall.post"
+                params.message = req.decode(params.message);
+                req.setbody(params, 1);
+                req.addbody('v', obj.ver);
+                req.setopts('MediaType', 'application/x-www-form-urlencoded');
+                A = WEB.API.Auth(req, obj.authdata.data);
+                A.oauth20();
+                req.addbody('access_token', req.getquery('access_token'));
+                req.clearquery();
+                [res, err] = post(req);
+            else
+                req.setquery(params);
+                req.addquery('v', obj.ver);
+                req.setopts('ContentType', 'json');
+                req.setopts('Timeout', 15);
+                A = WEB.API.Auth(req, obj.authdata.data);
+                req = A.oauth20();
+                [res, err] = get(req);
+            end
             count = [];
             obj.check_api_error(res);
             extract = isfield(apiopts, 'extract') && apiopts.extract;
@@ -197,6 +209,7 @@ classdef VK < WEB.API.Common
                 params{1, 1} = 'group_id';
             else
                 params{1, 1} = 'group_ids';
+                params{1, 3} = join(string(params{1, 3}), ',');
             end                
             [res, count] = obj.call_api(method, params, varargin);
         end
@@ -227,14 +240,14 @@ classdef VK < WEB.API.Common
             [res, count] = obj.call_api(method, params, varargin);
         end
         
-        function res = wall_post(obj, owner_id, varargin)
+        function [res, err] = wall_post(obj, owner_id, varargin)
             %% Post on wall
             method = 'wall.post';
             params = {'owner_id', 'required', owner_id
                 'message', 'optional', ''
                 'attachments', 'optional', ''
                 'friends_only', 'optional', 0};
-            res = obj.call_api(method, params, varargin);
+            [res, ~, err] = obj.call_api(method, params, varargin);
         end
         
     end
