@@ -62,6 +62,17 @@ classdef MATLABWEBAPIUpdater < handle
             end
         end
         
+        function bpath = getbinpath(obj)
+            % Get generated binary file path            
+            [~, name] = fileparts(obj.pname);
+            if obj.ptype == "toolbox"
+                ext = ".mltbx";
+            else
+                ext = ".mlappinstall";
+            end
+            bpath = fullfile(obj.root, name + ext);
+        end
+        
         function ptype = getptype(obj)
             % Get project type (Toolbox/App)
             ppath = fullfile(obj.root, obj.pname);
@@ -318,6 +329,7 @@ classdef MATLABWEBAPIUpdater < handle
         function build(obj, pv)
             % Build toolbox for specified version
             ppath = fullfile(obj.root, obj.pname);
+            obj.gendoc();
             if nargin > 1
                 if obj.ptype == "toolbox"
                     matlab.addons.toolbox.toolboxVersion(ppath, pv);
@@ -329,12 +341,14 @@ classdef MATLABWEBAPIUpdater < handle
                 end
                 obj.pv = pv;
             end
+            bname = strrep(obj.name, ' ', '-');
+            bpath = fullfile(obj.root, bname);
             if obj.ptype == "toolbox"
                 obj.seticons();
-                name = strrep(obj.name, ' ', '-');
-                matlab.addons.toolbox.packageToolbox(ppath, name);
+                matlab.addons.toolbox.packageToolbox(ppath, bname);
             else
                 matlab.apputil.package(ppath);
+                movefile(fullfile(obj.root, obj.name + ".mlappinstall"), bpath + ".mlappinstall",'f');
             end
             obj.echo('has been built');
         end
@@ -376,11 +390,31 @@ classdef MATLABWEBAPIUpdater < handle
             obj.push();
             obj.tag();
             obj.echo('has been deployed');
+            clipboard('copy', ['"' char(obj.getbinpath) '"'])
+            disp("Binary path was copied to clipboard")
+            disp("* Now create release on GitHub page with binary attached *")
+            pause(1)
+            web(obj.remote + "/releases/edit/v" + obj.pv, '-browser')
         end
         
         function echo(obj, msg)
             % Display service message
             fprintf('%s v%s %s\n', obj.name, obj.pv, msg);
+        end
+        
+        function gendoc(obj)
+            % Generate html from mlx doc
+            docdir = fullfile(obj.root, 'doc');
+            fs = struct2table(dir(fullfile(docdir, '*.mlx')), 'AsArray', true);
+            fs = convertvars(fs, 1:3, 'string');
+            for i = 1 : height(fs)
+                [~, fname] = fileparts(fs.name(i));
+                fprintf('Converting %s...\n', fname);
+                fpath = fullfile(fs.folder(i), fs.name{i});
+                htmlpath = fullfile(fs.folder(i), fname + ".html");
+                matlab.internal.liveeditor.openAndConvert(char(fpath), char(htmlpath));
+                disp('Doc has been generated');
+            end
         end
         
         function seticons(obj)
