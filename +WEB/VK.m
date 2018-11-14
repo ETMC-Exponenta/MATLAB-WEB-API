@@ -57,7 +57,7 @@ classdef VK < WEB.API.Common
             end
             req = WEB.API.Req(obj.URL);
             req.addurl(method);
-            if method == "wall.post"
+            if isfield(apiopts, 'longMsg') && apiopts.longMsg
                 params.message = req.decode(params.message);
                 req.setbody(params, 1);
                 req.addbody('v', obj.ver);
@@ -246,7 +246,8 @@ classdef VK < WEB.API.Common
             params = {'owner_id', 'required', owner_id
                 'message', 'optional', ''
                 'attachments', 'optional', ''
-                'friends_only', 'optional', 0};
+                'friends_only', 'optional', 0
+                'longMsg', 'apiOption', false};
             [res, ~, err] = obj.call_api(method, params, varargin);
         end
         
