@@ -40,7 +40,7 @@ classdef BingMaps < WEB.API.Common
             end
         end
         
-        function [res, geocode] = location_findByQuery(obj, query, varargin)
+        function [res, data] = location_findByQuery(obj, query, varargin)
             %% Find location by query
             method = 'Locations';
             params = {'query', 'required', query
@@ -48,18 +48,23 @@ classdef BingMaps < WEB.API.Common
                 'incl', 'optional', ''
                 'inclnb', 'optional', 0
                 'useStorage', 'apiOption', 0
+                'storeAll', 'apiOption', 0
                 'plot', 'apiOption', 0};
             [~, apiopts] = obj.prepare_params(params, varargin);
-            geocode = [];
+            data = [];
             res = [];
             if apiopts.useStorage
-                geocode = obj.storage.get_cm(query);
+                data = obj.storage.get_cm(query);
             end
-            if isempty(geocode)
+            if isempty(data)
                 res = obj.call_api(method, params, varargin);
-                geocode = obj.get_geocode(res);
+                if apiopts.storeAll
+                    data = res;
+                else
+                    data = obj.get_geocode(res);
+                end
                 if apiopts.useStorage
-                    obj.storage.set_cm(query, geocode);
+                    obj.storage.set_cm(query, data);
                     obj.storage.save();
                 end
             end
