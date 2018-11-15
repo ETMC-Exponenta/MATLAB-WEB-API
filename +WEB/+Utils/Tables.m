@@ -96,7 +96,11 @@ classdef Tables
             %% Convert containers.Map to table
             k = keys(cm)';
             v = values(cm)';
-            v = obj.concat(v);
+            if istable(v{1}) || isstruct(v{1})
+                v = obj.concat(v);
+            else
+                v = reshape([v{:}], 2, [])';
+            end
             T = table(k, v, 'VariableNames', {'Keys' 'Values'});
         end
         
