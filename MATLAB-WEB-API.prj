@@ -5,9 +5,9 @@
     <param.email>roslovets@exponenta.ru</param.email>
     <param.company>ETMC Exponenta</param.company>
     <param.summary>Work with WEB services directly from MATLAB</param.summary>
-    <param.description>Work with existed WEB-services API or create your own.</param.description>
+    <param.description>Work with existed WEB-services API or create your own</param.description>
     <param.screenshot>${PROJECT_ROOT}\doc\MATLAB-WEB-API.png</param.screenshot>
-    <param.version>0.2.7</param.version>
+    <param.version>0.3.0</param.version>
     <param.output>${PROJECT_ROOT}\MATLAB WEB API.mltbx</param.output>
     <param.products.name />
     <param.products.id />
@@ -26,6 +26,7 @@ work
 cover.png
 **/*.asv
 data/*_data*
+MATLABWEBAPIDev.m
 dev_on.m
 %
 % A single file in a subfolder of the toolbox folder:
@@ -101,6 +102,7 @@ dev_on.m
       <file>${PROJECT_ROOT}\doc</file>
       <file>${PROJECT_ROOT}\examples</file>
       <file>${PROJECT_ROOT}\info.xml</file>
+      <file>${PROJECT_ROOT}\MATLABWEBAPIExtender.m</file>
       <file>${PROJECT_ROOT}\MATLABWEBAPIUpdater.m</file>
       <file>${PROJECT_ROOT}\README.md</file>
       <file>${PROJECT_ROOT}\ToolboxConfig.xml</file>
