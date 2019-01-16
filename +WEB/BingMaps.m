@@ -159,8 +159,8 @@ classdef BingMaps < WEB.API.Common
             %% Plot geocodes on map
             gc = obj.get_geocode(res);
             conf = replace(res.confidence, {'Low','Medium','High'}, {'1','2','3'});
-            P = WEB.Utils.Plotter;
-            g = P.map(gc, 'Size', str2double(conf), 'Color', res.name);
+            PU = WEB.Utils.Plotter;
+            g = PU.geoBubble(gc, 'Size', str2double(conf), 'Color', res.name);
             g.SizeLegendTitle = 'Confidence';
             g.ColorLegendTitle = 'Name';
             if nargin > 2

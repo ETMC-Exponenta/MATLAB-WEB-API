@@ -6,7 +6,7 @@ classdef Plotter
             % Plotter Construct an instance of this class
         end
         
-        function g = map(~, gc, varargin)
+        function g = geoBubble(~, gc, varargin)
             %% Plot geobubble map
             p = inputParser;
             p.addRequired('gc');
@@ -23,6 +23,33 @@ classdef Plotter
             g = geobubble(gc(:, 1), gc(:, 2), size, color);
             if ~isempty(p.Results.Title)
                 g.Title = p.Results.Title;
+            end
+        end
+        
+        function g = geoScatter(~, gc, varargin)
+            %% Plot geoscatter map
+            p = inputParser;
+            p.addRequired('gc');
+            p.addParameter('Size', []);
+            p.addParameter('Color', [0 0 1]);
+            p.addParameter('Tips', '');
+            p.addParameter('Title', '');
+            p.parse(gc, varargin{:});
+            size = p.Results.Size;
+            color = p.Results.Color;
+            figure;
+            g = geoscatter(gc(:, 1), gc(:, 2), size * 2000, color, '.');
+            if ~isempty(p.Results.Title)
+                title(p.Results.Title);
+            end
+            if ~isempty(p.Results.Tips)
+                dcm = datacursormode(gcf);
+                dcm.UpdateFcn = @(~, e) pointtips([], e, p.Results.Tips);
+            end
+            function txt = pointtips(~, event_obj, tips)
+                % Customizes text of data tips
+                i = event_obj.DataIndex;
+                txt = tips(i, :)';
             end
         end
         
