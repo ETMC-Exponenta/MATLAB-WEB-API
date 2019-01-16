@@ -2,8 +2,8 @@
 <config>
    <name>MATLAB WEB API</name>
    <pname>MATLAB-WEB-API.prj</pname>
-   <ptype>toolbox</ptype>
+   <type>toolbox</type>
    <remote>https://github.com/ETMC-Exponenta/MATLAB-WEB-API.git</remote>
-   <updaterv>0.3</updaterv>
+   <extv>1.2</extv>
 </config>
-<!--MATLABWEBAPIUpdater configuration file-->
+<!--Toolbox Extender configuration file. DO NOT DELETE-->

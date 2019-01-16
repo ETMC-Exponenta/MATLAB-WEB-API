@@ -1,3 +1,3 @@
 function Doc
-updater = MATLABWEBAPIUpdater;
-updater.doc();
+TE = MATLABWEBAPIExtender;
+TE.doc();

@@ -3,9 +3,9 @@ function Update(force)
 if nargin < 1
     force = 0;
 end
-updater = MATLABWEBAPIUpdater;
+UT = MATLABWEBAPIUpdater;
 if ~force
-    updater.update();
+    UT.update();
 else
-    updater.install();
+    UT.installweb();
 end

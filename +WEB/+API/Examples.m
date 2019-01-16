@@ -1,3 +1,3 @@
 function Examples
-updater = MATLABWEBAPIUpdater;
-updater.examples();
+TE = MATLABWEBAPIExtender;
+TE.examples();

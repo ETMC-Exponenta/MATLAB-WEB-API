@@ -1,4 +1,4 @@
-function [cv, iv] = Ver
-% Get local and latest version
-updater = MATLABWEBAPIUpdater;
-[cv, iv] = updater.ver;
+function Ver
+% Check local and latest version
+TU = MATLABWEBAPIUpdater;
+TU.ver();
