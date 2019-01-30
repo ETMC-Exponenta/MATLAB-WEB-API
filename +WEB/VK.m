@@ -55,6 +55,12 @@ classdef VK < WEB.API.Common
             else
                 getAll = false;
             end
+            fs = fieldnames(params);
+            for i = 1 : length(fs)
+                if isdatetime(params.(fs{i}))
+                    params.(fs{i}) = posixtime(params.(fs{i}));
+                end
+            end
             req = WEB.API.Req(obj.URL);
             req.addurl(method);
             if isfield(apiopts, 'longMsg') && apiopts.longMsg
@@ -248,6 +254,19 @@ classdef VK < WEB.API.Common
                 'attachments', 'optional', ''
                 'friends_only', 'optional', 0
                 'longMsg', 'apiOption', false};
+            [res, ~, err] = obj.call_api(method, params, varargin);
+        end
+        
+        function [res, err] = notifications_get(obj, varargin)
+            %% Get notifications
+            method = 'notifications.get';
+            params = {'count', 'optional', 30
+                'start_from', 'optional', ''
+                'filters', 'optional', ''
+                'start_time', 'optional', []
+                'end_time', 'optional', []
+                'extract', 'apiOption', true};
+            p = obj.prepare_params(params, varargin);
             [res, ~, err] = obj.call_api(method, params, varargin);
         end
         
