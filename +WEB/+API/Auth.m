@@ -114,7 +114,7 @@ classdef Auth < handle
         function [values, url] = getfrombrowser(obj, params)
             %% Open URL in browser and get specified params values
             url = '';
-            [~, h, ~] = web(obj.req.getfullurl());
+            [~, h, ~] = web(obj.req.getfullurl(), '-new');
             while ~h.isValid
                 % wait till Web Browser is ready
             end
