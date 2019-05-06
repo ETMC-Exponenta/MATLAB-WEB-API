@@ -257,6 +257,18 @@ classdef VK < WEB.API.Common
             [res, ~, err] = obj.call_api(method, params, varargin);
         end
         
+        function [res, err] = video_save(obj, varargin)
+            %% Post on wall
+            method = 'video.save';
+            params = {'name', 'optional', ''
+                'description', 'optional', ''
+                'is_private', 'optional', 0
+                'wallpost', 'optional', 0
+                'link', 'optional', ''};
+            [res, ~, err] = obj.call_api(method, params, varargin);
+            webread(res.upload_url);
+        end
+        
         function [res, err] = notifications_get(obj, varargin)
             %% Get notifications
             method = 'notifications.get';
