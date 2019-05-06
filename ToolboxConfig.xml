@@ -4,6 +4,6 @@
    <pname>MATLAB-WEB-API.prj</pname>
    <type>toolbox</type>
    <remote>https://github.com/ETMC-Exponenta/MATLAB-WEB-API.git</remote>
-   <extv>1.2</extv>
+   <extv>1.6</extv>
 </config>
 <!--Toolbox Extender configuration file. DO NOT DELETE-->

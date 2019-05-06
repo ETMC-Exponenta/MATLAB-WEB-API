@@ -14,7 +14,11 @@ classdef MATLABWEBAPIDev < handle
             if nargin < 1
                 obj.TE = MATLABWEBAPIExtender;
             else
-                obj.TE = extender;
+                if ischar(extender) || isStringScalar(extender)
+                    obj.TE = MATLABWEBAPIExtender(extender);
+                else
+                    obj.TE = extender;
+                end
             end
             if ~strcmp(obj.TE.root, pwd)
                 warning("Project root folder does not math with current folder." +...
@@ -25,7 +29,7 @@ classdef MATLABWEBAPIDev < handle
         
         function vp = gvp(obj)
             % Get project version
-            ppath = fullfile(obj.TE.root, obj.TE.pname);
+            ppath = obj.TE.getppath();
             if isfile(ppath)
                 if obj.TE.type == "toolbox"
                     vp = matlab.addons.toolbox.toolboxVersion(ppath);
@@ -39,11 +43,16 @@ classdef MATLABWEBAPIDev < handle
             obj.vp = vp;
         end
         
-        function build(obj, vp)
+        function build(obj, vp, gendoc)
             % Build toolbox for specified version
-            ppath = fullfile(obj.TE.root, obj.TE.pname);
-            obj.gendoc();
-            if nargin > 1
+            ppath = obj.TE.getppath();
+            if nargin < 3
+                gendoc = true;
+            end
+            if gendoc
+                obj.gendoc();
+            end
+            if nargin > 1 && ~isempty(vp)
                 if obj.TE.type == "toolbox"
                     matlab.addons.toolbox.toolboxVersion(ppath, vp);
                 else
@@ -52,11 +61,11 @@ classdef MATLABWEBAPIDev < handle
                     txt = strrep(txt, '<param.version />', '');
                     obj.TE.writetxt(txt, ppath);
                 end
-                obj.vp = vp;
             end
             [~, bname] = fileparts(obj.TE.pname);
             bpath = fullfile(obj.TE.root, bname);
             if obj.TE.type == "toolbox"
+                obj.updateroot();
                 obj.seticons();
                 matlab.addons.toolbox.packageToolbox(ppath, bname);
             else
@@ -66,9 +75,12 @@ classdef MATLABWEBAPIDev < handle
             obj.TE.echo('has been built');
         end
         
-        function test(obj)
+        function test(obj, gendoc)
             % Build and install
-            obj.build();
+            if nargin < 2
+                gendoc = false;
+            end
+            obj.build(obj.vp, gendoc);
             obj.TE.install();
         end
         
@@ -85,15 +97,20 @@ classdef MATLABWEBAPIDev < handle
         function release(obj, vp)
             % Build toolbox, push and tag version
             if nargin > 1
-                obj.build(vp);
+                obj.vp = vp;
             else
-                obj.build();
+                vp = '';
+            end
+            if ~isempty(obj.TE.pname)
+                obj.build(vp);
             end
             obj.push();
             obj.tag();
             obj.TE.echo('has been deployed');
-            clipboard('copy', ['"' char(obj.TE.getbinpath) '"'])
-            disp("Binary path was copied to clipboard")
+            if ~isempty(obj.TE.pname)
+                clipboard('copy', ['"' char(obj.TE.getbinpath) '"'])
+                disp("Binary path was copied to clipboard")
+            end
             disp("* Now create release on GitHub page with binary attached *")
             pause(1)
             web(obj.TE.remote + "/releases/edit/v" + obj.vp, '-browser')
@@ -103,6 +120,15 @@ classdef MATLABWEBAPIDev < handle
     
     
     methods (Hidden)
+        
+        function updateroot(obj)
+            % Update project root
+            service = com.mathworks.toolbox_packaging.services.ToolboxPackagingService;
+            configKey = service.openProject(obj.TE.getppath());
+            service.removeToolboxRoot(configKey);
+            service.setToolboxRoot(configKey, obj.TE.root);
+            service.closeProject(configKey);
+        end
         
         function gendoc(obj)
             % Generate html from mlx doc

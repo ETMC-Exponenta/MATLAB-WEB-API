@@ -51,6 +51,8 @@ classdef MATLABWEBAPIExtender < handle
                     vc = char(vc);
                 elseif isempty(vc)
                     vc = '';
+                else
+                    vc = char(vc(end));
                 end
             else
                 tbx = matlab.apputil.getInstalledAppInfo;
@@ -81,12 +83,14 @@ classdef MATLABWEBAPIExtender < handle
                 disp('Nothing to uninstall');
             else
                 if obj.type == "toolbox"
-                    matlab.addons.uninstall(guid);
+                    matlab.addons.uninstall(char(guid));
                 else
-                    matlab.apputil.uninstall(guid);
+                    matlab.apputil.uninstall(char(guid));
                 end
-                obj.echo('has been uninstalled');
-                obj.gvc();
+                disp('Uninstalled');
+                try
+                    obj.gvc();
+                end
             end
         end
         
@@ -112,6 +116,11 @@ classdef MATLABWEBAPIExtender < handle
             cd(expath);
         end
         
+        function web(obj)
+            % Open GitHub page
+            web(obj.remote, '-browser');
+        end
+        
     end
     
     
@@ -125,7 +134,7 @@ classdef MATLABWEBAPIExtender < handle
         function name = getname(obj)
             % Get project name from project file
             name = '';
-            ppath = fullfile(obj.root, obj.pname);
+            ppath = obj.getppath();
             if isfile(ppath)
                 txt = obj.readtxt(ppath);
                 name = char(extractBetween(txt, '<param.appname>', '</param.appname>'));
@@ -137,16 +146,36 @@ classdef MATLABWEBAPIExtender < handle
             % Get project file name
             fs = dir(fullfile(obj.root, '*.prj'));
             if ~isempty(fs)
-                pname = fs(1).name;
-                obj.pname = pname;
+                names = {fs.name};
+                isproj = false(1, length(names));
+                for i = 1 : length(names)
+                    txt = obj.readtxt(fullfile(obj.root, names{i}));
+                    isproj(i) = ~contains(txt, '<MATLABProject');
+                end
+                if any(isproj)
+                    names = names(isproj);
+                    pname = names{1};
+                    obj.pname = pname;
+                else
+                    warning('Project file was not found in a current folder');
+                end
             else
-                error('Project file was not found in a current folder');
+                warning('Project file was not found in a current folder');
+            end
+        end
+        
+        function ppath = getppath(obj)
+            % Get project file full path
+            if ~isempty(obj.pname)
+                ppath = fullfile(obj.root, obj.pname);
+            else
+                ppath = '';
             end
         end
         
         function type = gettype(obj)
             % Get project type (Toolbox/App)
-            ppath = fullfile(obj.root, obj.pname);
+            ppath = obj.getppath();
             txt = obj.readtxt(ppath);
             if contains(txt, 'plugin.toolbox')
                 type = 'toolbox';
@@ -162,6 +191,10 @@ classdef MATLABWEBAPIExtender < handle
             % Get remote (GitHub) address via Git
             [~, cmdout] = system('git remote -v');
             remote = extractBetween(cmdout, 'https://', '.git', 'Boundaries', 'inclusive');
+            if isempty(remote)
+                remote = extractBetween(cmdout, 'https://', '(', 'Boundaries', 'inclusive');
+                remote = strtrim(erase(remote, '('));
+            end
             if ~isempty(remote)
                 remote = remote(end);
             end
@@ -177,16 +210,22 @@ classdef MATLABWEBAPIExtender < handle
         
         function txt = readtxt(~, fpath)
             % Read text from file
-            f = fopen(fpath, 'r', 'n', 'windows-1251');
-            txt = fread(f, '*char')';
-            fclose(f);
+            if isfile(fpath)
+                f = fopen(fpath, 'r', 'n', 'windows-1251');
+                txt = fread(f, '*char')';
+                fclose(f);
+            else
+                txt = '';
+            end
         end
         
         function writetxt(~, txt, fpath)
             % Wtite text to file
-            fid = fopen(fpath, 'w', 'n', 'windows-1251');
-            fwrite(fid, unicode2native(txt, 'windows-1251'));
-            fclose(fid);
+            if isfile(fpath)
+                fid = fopen(fpath, 'w', 'n', 'windows-1251');
+                fwrite(fid, unicode2native(txt, 'windows-1251'));
+                fclose(fid);
+            end
         end
         
         function txt = txtrep(obj, fpath, old, new)
