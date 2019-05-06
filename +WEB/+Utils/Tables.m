@@ -28,7 +28,7 @@ classdef Tables
                 end
                 if any(ist) || nargin < 3 || ~preserveFormat
                     if isstruct(ss)
-                        ss = struct2table(ss);
+                        ss = struct2table(ss, 'AsArray', true);
                     end
                 end
             end
