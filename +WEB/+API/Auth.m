@@ -114,6 +114,10 @@ classdef Auth < handle
         function [values, url] = getfrombrowser(obj, params)
             %% Open URL in browser and get specified params values
             url = '';
+            isExt = com.mathworks.mlwidgets.html.HTMLPrefs.isSystemBrowserForExternalSites().booleanValue();
+            if isExt
+                com.mathworks.mlwidgets.html.HTMLPrefs.setSystemBrowserForExternalSites(java.lang.Boolean(false));
+            end
             [~, h, ~] = web(obj.req.getfullurl(), '-new');
             while ~h.isValid
                 % wait till Web Browser is ready
@@ -129,6 +133,9 @@ classdef Auth < handle
             end
             values = obj.parsequery(url, params);
             close(h);
+            if isExt
+                com.mathworks.mlwidgets.html.HTMLPrefs.setSystemBrowserForExternalSites(java.lang.Boolean(true));
+            end
         end
         
         function ps = parsequery(~, url, params)
