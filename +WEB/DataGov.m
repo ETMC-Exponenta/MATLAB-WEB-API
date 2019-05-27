@@ -25,7 +25,7 @@ classdef DataGov < WEB.API.Common
             req.setquery(params);
             req.addquery('access_token', obj.access_token);
             req.setopts('ContentType', 'json');
-            req.setopts('Timeout', 15);
+            req.setopts('Timeout', obj.timeout);
             res = get(req);
         end
         

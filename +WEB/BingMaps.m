@@ -27,7 +27,7 @@ classdef BingMaps < WEB.API.Common
             req.addurl(method);
             req.setquery(params);
             req.addquery('key', obj.key);
-            req.setopts('Timeout', 10);
+            req.setopts('Timeout', obj.timeout);
             res = get(req);
             if isempty(res)
                 error('API Error: empty result')

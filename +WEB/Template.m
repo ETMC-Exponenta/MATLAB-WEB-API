@@ -28,7 +28,7 @@ classdef Template < WEB.API.Common
             req.addurl(method); % add API method
             req.setquery(params); % add method parameters
             req.setopts('ContentType', 'json'); % MATLAB works with JSON data
-            req.setopts('Timeout', 15); % for heavy calls
+            req.setopts('Timeout', obj.timeout); % for heavy calls
             res = get(req); % call WEB API
             if apiopts.checkerr % check API auxiliary option
                 obj.check_api_error(res); % check for WEB API errors if you need

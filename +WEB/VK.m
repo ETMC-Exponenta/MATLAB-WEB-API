@@ -77,7 +77,7 @@ classdef VK < WEB.API.Common
                 req.setquery(params);
                 req.addquery('v', obj.ver);
                 req.setopts('ContentType', 'json');
-                req.setopts('Timeout', 15);
+                req.setopts('Timeout', obj.timeout);
                 A = WEB.API.Auth(req, obj.authdata.data);
                 req = A.oauth20();
                 [res, err] = get(req);

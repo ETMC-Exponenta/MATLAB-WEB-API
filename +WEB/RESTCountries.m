@@ -19,7 +19,7 @@ classdef RESTCountries < WEB.API.Common
                 [params, apiopts] = obj.prepare_params(params, vars);
                 req.setquery(params);
             end
-            req.setopts('Timeout', 10);
+            req.setopts('Timeout', obj.timeout);
             res = get(req);
             if ~isempty(res) && ~isscalar(res)
                 res = struct2table(res);

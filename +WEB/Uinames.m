@@ -23,7 +23,7 @@ classdef Uinames < WEB.API.Common
                 [params, apiopts] = obj.prepare_params(params, varargin);
                 req.setquery(params);
             end
-            req.setopts('Timeout', 10);
+            req.setopts('Timeout', obj.timeout);
             res = get(req);
             if ~isempty(res)
                 res = struct2table(res, 'AsArray', true);

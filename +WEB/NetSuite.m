@@ -48,7 +48,7 @@ classdef NetSuite < WEB.API.Common
             if nargin > 4 && ~isempty(body)
                 req.addbody(body);
             end
-            req.setopts('Timeout', 15);
+            req.setopts('Timeout', obj.timeout);
             req.setopts('ArrayFormat', 'json');
             req.setopts('ContentType', 'json');
             req.setopts('MediaType', 'application/json');

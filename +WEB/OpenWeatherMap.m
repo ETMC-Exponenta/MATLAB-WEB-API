@@ -20,7 +20,7 @@ classdef OpenWeatherMap < WEB.API.Common
             req.addurl(method);
             req.setquery(params);
             req.addquery('APPID', obj.key);
-            req.setopts('Timeout', 10);
+            req.setopts('Timeout', obj.timeout);
             res = get(req);
         end
         

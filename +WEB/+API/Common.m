@@ -1,5 +1,9 @@
 classdef (Abstract) Common < handle
     % APIs Common Class
+    
+    properties
+        timeout = 15
+    end
         
     methods
         function obj = Common()
