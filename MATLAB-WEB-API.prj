@@ -7,7 +7,7 @@
     <param.summary>Work with WEB services directly from MATLAB</param.summary>
     <param.description>Work with existed WEB-services API or create your own</param.description>
     <param.screenshot>${PROJECT_ROOT}\doc\MATLAB-WEB-API.png</param.screenshot>
-    <param.version>0.3.2</param.version>
+    <param.version>0.3.3</param.version>
     <param.output>${PROJECT_ROOT}\MATLAB WEB API.mltbx</param.output>
     <param.products.name />
     <param.products.id />
@@ -28,22 +28,9 @@ cover.png
 data/*_data*
 MATLABWEBAPIDev.m
 dev_on.m
-%
-% A single file in a subfolder of the toolbox folder:
-% example/.svn
-%
-% All files in a subfolder of the toolbox folder:
-% example/*
-%
-% All files of a certain name in all subfolders of the toolbox folder:
-% **/.svn
-%
-% All files matching a pattern in all subfolders of the toolbox folder:
-% **/*.bak
-%
-MATLABWEBAPIDev
 install.m
-installweb.m</param.exclude.filters>
+installweb.m
+**/helpsearch-v3</param.exclude.filters>
     <param.exclude.pcodedmfiles>true</param.exclude.pcodedmfiles>
     <param.examples />
     <param.demosxml />
@@ -116,6 +103,8 @@ installweb.m</param.exclude.filters>
       <file>${PROJECT_ROOT}\doc</file>
       <file>${PROJECT_ROOT}\examples</file>
       <file>${PROJECT_ROOT}\info.xml</file>
+      <file>${PROJECT_ROOT}\install.m</file>
+      <file>${PROJECT_ROOT}\installweb.m</file>
       <file>${PROJECT_ROOT}\MATLAB-WEB-API.mltbx</file>
       <file>${PROJECT_ROOT}\MATLAB-WEB-API.prj</file>
       <file>${PROJECT_ROOT}\MATLABWEBAPIDev.m</file>

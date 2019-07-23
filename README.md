@@ -37,13 +37,11 @@ Framework for building handy WEB APIs to work with any WEB services from MATLAB
 In MATLAB execute:
 
 ```matlab
-r = webread('https://api.github.com/repos/ETMC-Exponenta/MATLAB-WEB-API/releases/latest');
-websave(r.assets.name, r.assets.browser_download_url);
-open(r.assets.name)
+eval(webread('https://exponenta.ru/install/web'))
 ```
 #### 2nd approach (install from scratch)
 
-* Download [MATLAB-WEB-API.mltbx](https://github.com/ETMC-Exponenta/MATLAB-WEB-API/raw/master/MATLAB-WEB-API.mltbx)
+* Download [MATLAB-WEB-API.mltbx](https://roslovets.github.io/ghbin#ETMC-Exponenta/MATLAB-WEB-API#MATLAB-WEB-API.mltbx)
 * Open it
 
 #### 3rd approach (update installed)
@@ -116,13 +114,11 @@ WEB.API.Doc
 В MATLAB выполните:
 
 ```matlab
-r = webread('https://api.github.com/repos/ETMC-Exponenta/MATLAB-WEB-API/releases/latest');
-websave(r.assets.name, r.assets.browser_download_url);
-open(r.assets.name)
+eval(webread('https://exponenta.ru/install/web'))
 ```
 #### Способ 2 (установка с нуля)
 
-* Скачайте [MATLAB-WEB-API.mltbx](https://github.com/ETMC-Exponenta/MATLAB-WEB-API/raw/master/MATLAB-WEB-API.mltbx)
+* Скачайте [MATLAB-WEB-API.mltbx](https://roslovets.github.io/ghbin#ETMC-Exponenta/MATLAB-WEB-API#MATLAB-WEB-API.mltbx)
 * Откройте его
 
 #### Способ 3 (обновление)

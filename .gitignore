@@ -2,3 +2,4 @@ data/*auth_data*
 work
 **/*.asv
 **/helpsearch-v3
+*.mltbx
