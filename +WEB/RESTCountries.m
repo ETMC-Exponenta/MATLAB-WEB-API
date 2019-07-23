@@ -22,21 +22,28 @@ classdef RESTCountries < WEB.API.Common
             req.setopts('Timeout', obj.timeout);
             res = get(req);
             if ~isempty(res) && ~isscalar(res)
-                res = struct2table(res);
+                if isstruct(res)
+                    res = struct2table(res);
+                else
+                    TU = WEB.Utils.Tables;
+                    res = TU.concat(res);
+                end
             end
         end
         
         function res = all(obj, varargin)
             %% Get info about all countries
             method = 'all';
-            res = obj.call_api(method, {}, varargin);
+            params = {'fields', 'optional', ''};
+            res = obj.call_api(method, params, varargin);
         end
         
         function res = byName(obj, name, varargin)
             %% Search by country name. It can be the native name or partial or full name
             method = "name/" + name;
             params = {'name', 'required', name
-                'fullText', 'optional', false};
+                'fullText', 'optional', false
+                'fields', 'optional', ''};
             res = obj.call_api(method, params, varargin);
         end
         
@@ -47,7 +54,8 @@ classdef RESTCountries < WEB.API.Common
             if ~isscalar(codes)
                 codes = join(codes, ';');
             end
-            params = {'codes', 'optional', codes};
+            params = {'codes', 'optional', codes
+                'fields', 'optional', ''};
             vars = {'codes', codes};
             res = obj.call_api(method, params, vars);
         end
@@ -55,13 +63,15 @@ classdef RESTCountries < WEB.API.Common
         function res = byCurrency(obj, curcode, varargin)
             %% Search by ISO 4217 currency code
             method = "currency/" + curcode;
-            res = obj.call_api(method, {}, varargin);
+            params = {'fields', 'optional', ''};
+            res = obj.call_api(method, params, varargin);
         end
         
         function res = byRegion(obj, region, varargin)
             %% Search by region
             method = "region/" + region;
-            res = obj.call_api(method, {}, varargin);
+            params = {'fields', 'optional', ''};
+            res = obj.call_api(method, params, varargin);
         end
         
     end
