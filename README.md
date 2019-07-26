@@ -86,6 +86,8 @@ WEB.API.Doc
 
 [Страница проекта на MathWorks File Exchange](https://www.mathworks.com/matlabcentral/fileexchange/68611)
 
+[Статья с описанием в сообществе Экспонента](https://hub.exponenta.ru/post/matlab-web-api-dlya-raboty-s-veb-servisami898)
+
 #### Ключевые особенности:
 
 * Набор методов, шаблонов и примеров для быстрого создания WEB API для работы с любым WEB-сервисом из MATLAB
