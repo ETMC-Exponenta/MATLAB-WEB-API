@@ -138,10 +138,7 @@ classdef MATLABWEBAPIUpdater < handle
                         delay = 1;
                     end
                     isupd = false;
-                    t = timer('ExecutionMode', 'singleShot', 'StartDelay', delay);
-                    t.TimerFcn = @(~, ~) obj.isupd_async(cbfun, vc);
-                    t.Period = 1;
-                    start(t);
+                    obj.run_task(@(~, ~) obj.isupd_async(cbfun, vc), delay);
                 end
             else
                 isupd = false;
@@ -189,13 +186,20 @@ classdef MATLABWEBAPIUpdater < handle
                 TE.cloneclass('Extender', obj.ext.root, vname);
                 cname = TE.cloneclass('Updater', obj.ext.root, vname);
                 copyfile(fullfile(obj.ext.root, obj.ext.config), dpath);
-                t = timer('StartDelay', delay, 'ExecutionMode', 'singleShot',...
-                    'TimerFcn', @(t, e) obj.installweb_async(t, e, dpath, cname, varargin{:}));
                 if nargin > 2 && ~isempty(cbpre)
                     cbpre();
                 end
-                start(t);                
+                taskfcn = @(~, ~) obj.installweb_async(dpath, cname, varargin{:});
+                obj.run_task(taskfcn, delay);
             end
+        end
+        
+        function run_task(obj, fcn, delay)
+            %% Run delayed asynchronous task
+            tmr = timer('ExecutionMode', 'singleShot', 'StartDelay', delay,...
+                'TimerFcn', fcn, 'StopFcn', @(tmr,~,~) delete(tmr),...
+                'Name', obj.ext.name + " task");
+            start(tmr);
         end
         
     end
@@ -208,17 +212,15 @@ classdef MATLABWEBAPIUpdater < handle
             cbfun(obj.isupd);
         end
         
-        function installweb_async(obj, t, event, dpath, cname, cbpost)
+        function installweb_async(obj, dpath, cname, cbpost)
             % Task for update timer
             p0 = cd(dpath);
             TU = eval(cname);
             TU.installweb(dpath);
             cd(p0);
-            stop(t);
-            if nargin > 5
+            if nargin > 3
                 cbpost();
             end
-            delete(t);
         end
         
     end

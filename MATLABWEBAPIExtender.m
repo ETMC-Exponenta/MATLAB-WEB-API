@@ -157,6 +157,24 @@ classdef MATLABWEBAPIExtender < handle
             favs.addCommand(nfav);
         end
         
+        function yes = isfav(obj, label)
+            % Does favorite exist
+            favs = com.mathworks.mlwidgets.favoritecommands.FavoriteCommands.getInstance();
+            yes = favs.hasCommand(label, obj.name);
+        end
+        
+        function yes = isfavs(obj)
+            % Does favorites category exist
+            favs = com.mathworks.mlwidgets.favoritecommands.FavoriteCommands.getInstance();
+            yes = favs.hasCategory(obj.name);
+        end
+        
+        function yes = rmfav(obj, label)
+            % Remove favorite
+            favs = com.mathworks.mlwidgets.favoritecommands.FavoriteCommands.getInstance();
+            yes = favs.removeCommand(label, obj.name);
+        end
+        
         function rmfavs(obj)
             % Remove all favorites
             favs = com.mathworks.mlwidgets.favoritecommands.FavoriteCommands.getInstance();

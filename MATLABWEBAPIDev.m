@@ -46,7 +46,7 @@ classdef MATLABWEBAPIDev < handle
         function build(obj, vp, gendoc)
             % Build toolbox for specified version
             ppath = obj.ext.getppath();
-            if nargin > 2 && gendoc
+            if nargin < 3 || gendoc
                 obj.gendoc();
             end
             if nargin > 1 && ~isempty(vp)
@@ -110,15 +110,20 @@ classdef MATLABWEBAPIDev < handle
             web(obj.ext.remote + "/releases/edit/v" + obj.vp, '-browser')
         end
         
-        function gendoc(obj)
+        function gendoc(obj, format)
             % Generate html from mlx doc
+            if nargin < 2
+                format = "html";
+            else
+                format = string(format);
+            end
             docdir = fullfile(obj.ext.root, 'doc');
             fs = struct2table(dir(fullfile(docdir, '*.mlx')), 'AsArray', true);
             fs = convertvars(fs, 1:3, 'string');
             for i = 1 : height(fs)
                 [~, fname] = fileparts(fs.name(i));
                 fpath = char(fullfile(fs.folder(i), fs.name{i}));
-                htmlpath = char(fullfile(docdir, fname + ".html"));
+                htmlpath = char(fullfile(docdir, fname + "." + format));
                 htmlinfo = dir(htmlpath);
                 convert = isempty(htmlinfo);
                 if ~convert
@@ -132,6 +137,20 @@ classdef MATLABWEBAPIDev < handle
                 end
             end
             disp('Docs have been generated');
+        end
+        
+        function setver(obj, vp)
+            % Set version
+            ppath = obj.ext.getppath();
+            if obj.ext.type == "toolbox"
+                matlab.addons.toolbox.toolboxVersion(ppath, vp);
+            else
+                txt = obj.ext.readtxt(ppath);
+                txt = regexprep(txt, '(?<=(<param.version>))(.*?)(?=(</param.version>))', vp);
+                txt = strrep(txt, '<param.version />', '');
+                obj.ext.writetxt(txt, ppath);
+            end
+            obj.gvp();
         end
         
         function webrel(obj)
@@ -173,20 +192,6 @@ classdef MATLABWEBAPIDev < handle
             service.removeToolboxRoot(pr);
             service.setToolboxRoot(pr, obj.ext.root);
             service.closeProject(pr);
-        end
-        
-        function setver(obj, vp)
-            % Set version
-            ppath = obj.ext.getppath();
-            if obj.ext.type == "toolbox"
-                matlab.addons.toolbox.toolboxVersion(ppath, vp);
-            else
-                txt = obj.ext.readtxt(ppath);
-                txt = regexprep(txt, '(?<=(<param.version>))(.*?)(?=(</param.version>))', vp);
-                txt = strrep(txt, '<param.version />', '');
-                obj.ext.writetxt(txt, ppath);
-            end
-            obj.gvp();
         end
         
         function seticons(obj)
