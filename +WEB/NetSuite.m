@@ -77,6 +77,11 @@ classdef NetSuite < WEB.API.Common
             [resp, err] = obj.call_api(obj.sd_submit, 'PUT', [], body);
         end
         
+        function [resp, err] = post(obj, script, deploy, body)
+            %% Send data
+            [resp, err] = obj.call_api([script deploy], 'POST', [], body);
+        end
+        
         function [resp, err] = getEmployee(obj, email)
             %% Get Employee Name
             [resp, err] = obj.search('employee', {'firstname' 'lastname'}, {'email' 'is' email});
