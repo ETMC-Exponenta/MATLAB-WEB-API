@@ -266,7 +266,23 @@ classdef VK < WEB.API.Common
                 'wallpost', 'optional', 0
                 'link', 'optional', ''};
             [res, ~, err] = obj.call_api(method, params, varargin);
-            webread(res.upload_url);
+            uploaded = webread(res.response.upload_url);
+            if ~uploaded.response
+                error('Video was not uploaded to VK');
+            end
+            res = res.response;
+        end
+        
+        function res = video_addToAlbum(obj, owner_id, video_id, varargin)
+            %% Add video to album
+            method = 'video.addToAlbum';
+            params = {'owner_id', 'required', owner_id
+                'video_id', 'required', video_id
+                'album_id', 'optional', []
+                'album_ids', 'optional', []
+                'target_id', 'optional', []};
+            [res, ~, err] = obj.call_api(method, params, varargin);
+            res = res.response;
         end
         
         function [res, err] = notifications_get(obj, varargin)
