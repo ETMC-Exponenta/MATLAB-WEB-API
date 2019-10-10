@@ -215,6 +215,11 @@ classdef Tables
             [~, ia] = unique(t{:, vname});
             t = t(ia, :);
         end
+        
+        function yes = isvar(~, t, vname)
+            %% Check table has variable
+            yes = ismember(string(vname), t.Properties.VariableNames);
+        end
     end
 end
 
