@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
-  <configuration file="D:\MATLAB\MATLAB-WEB-API\MATLAB-WEB-API.prj" location="D:\MATLAB\MATLAB-WEB-API" name="MATLAB-WEB-API" target="target.toolbox" target-name="Package Toolbox">
+  <configuration file="E:\MATLAB\MATLAB-WEB-API\MATLAB-WEB-API.prj" location="E:\MATLAB\MATLAB-WEB-API" name="MATLAB-WEB-API" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>MATLAB WEB API</param.appname>
     <param.authnamewatermark>Pavel Roslovets</param.authnamewatermark>
     <param.email>roslovets@exponenta.ru</param.email>
@@ -7,7 +7,7 @@
     <param.summary>Work with WEB services directly from MATLAB</param.summary>
     <param.description>Work with existed WEB-services API or create your own</param.description>
     <param.screenshot>${PROJECT_ROOT}\doc\MATLAB-WEB-API.png</param.screenshot>
-    <param.version>0.3.4</param.version>
+    <param.version>0.4.0</param.version>
     <param.output>${PROJECT_ROOT}\MATLAB WEB API.mltbx</param.output>
     <param.products.name />
     <param.products.id />
@@ -118,16 +118,17 @@ installweb.m
     <fileset.depfun.excluded />
     <fileset.package />
     <build-deliverables>
-      <file location="${PROJECT_ROOT}" name="MATLAB WEB API.mltbx" optional="false">D:\MATLAB\MATLAB-WEB-API\MATLAB WEB API.mltbx</file>
+      <file location="${PROJECT_ROOT}" name="MATLAB WEB API.mltbx" optional="false">E:\MATLAB\MATLAB-WEB-API\MATLAB WEB API.mltbx</file>
     </build-deliverables>
     <workflow />
     <matlab>
-      <root>C:\Program Files\MATLAB\R2019a</root>
+      <root>C:\Program Files\MATLAB\R2019b</root>
       <toolboxes>
         <toolbox name="matlabcoder" />
         <toolbox name="embeddedcoder" />
         <toolbox name="gpucoder" />
         <toolbox name="fixedpoint" />
+        <toolbox name="matlabhdlcoder" />
         <toolbox name="neuralnetwork" />
       </toolboxes>
       <toolbox>
@@ -149,6 +150,11 @@ installweb.m
         <fixedpoint>
           <enabled>true</enabled>
         </fixedpoint>
+      </toolbox>
+      <toolbox>
+        <matlabhdlcoder>
+          <enabled>true</enabled>
+        </matlabhdlcoder>
       </toolbox>
       <toolbox>
         <neuralnetwork>
