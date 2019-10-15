@@ -16,6 +16,7 @@
 - **Template.m** - New WEB API template :new_moon:
 - **Uinames.m** - Random names generator [uinames.com](https://uinames.com/) :waning_gibbous_moon: [(example)](../examples/uinames_example.m)
 - **VK.m** - Popular russian social network [VK.com](https://vk.com/dev/manuals) API :waning_crescent_moon: [(example)](../examples/vk_example.m)
+- **YouTube.com** - Video hosting [YouTube.com](https://www.youtube.com/yt/dev/) API :waning_crescent_moon: [(example)](../examples/youtube_example.m)
 
 # Описание WEB API :ru:
 - **+API** - ключевые компоненты WEB API (создание и обработка запросов, авторизация, построение API)
@@ -33,3 +34,4 @@
 - **Template.m** - Шаблон для создания нового WEB API :new_moon:
 - **Uinames.m** - Генератор случайных имён [uinames.com](https://uinames.com/) :waning_gibbous_moon: [(пример)](../examples/uinames_example.m)
 - **VK.m** - API для работы с популярной российской соцсетью [VK.com](https://vk.com/dev/manuals) :waning_crescent_moon: [(пример)](../examples/vk_example.m)
+- **YouTube.com** - API видео-хостинга [YouTube.com](https://www.youtube.com/yt/dev/) :waning_crescent_moon: [(пример)](../examples/youtube_example.m)
