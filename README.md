@@ -105,7 +105,7 @@ WEB.API.Doc
 * [REST Countries](http://restcountries.eu) - информация о странах
 * [uinames.com](https://uinames.com/) - генератор случайных имён
 * [VK](https://vk.com/) - российская социальная сеть ![OAuth 2.0 logo](https://cdn-images-1.medium.com/max/16/0*QWNG5EAnPSaUSAHH.png "OAuth 2.0")
-* [YouTube](https://youtube.com/) - Видео-хостинг
+* [YouTube](https://youtube.com/) - видео-хостинг
 
 **[Присоединяйтесь!](https://git-scm.com/book/ru/v2/GitHub-Внесение-собственного-вклада-в-проекты) Вместе мы добавим больше сервисов и улучшим работу с имеющимися.**
 
