@@ -16,7 +16,7 @@ classdef HeadHunter < WEB.API.Common
             end
         end
         
-        function res = call_api(obj, method, params, vars)
+        function [res, err] = call_api(obj, method, params, vars)
             %% Get via VK API
             if nargin < 3
                 params = {};
@@ -34,7 +34,7 @@ classdef HeadHunter < WEB.API.Common
             end
             req.setopts('ContentType', 'json');
             req.setopts('Timeout', 15);
-            res = get(req);
+            [res, err] = get(req);
         end
         
         function p = fix_dates(~, p)
@@ -51,21 +51,49 @@ classdef HeadHunter < WEB.API.Common
             end
         end
         
-        function res = me(obj)
+        function [res, err] = me(obj)
             %% Get self info
             method = 'me';
-            res = obj.call_api(method);
+            [res, err] = obj.call_api(method);
         end
         
-        function res = dictionaries(obj)
+        function [res, err] = dictionaries(obj)
             %% Get dictionaries
             method = 'dictionaries';
-            res = obj.call_api(method);
+            [res, err] = obj.call_api(method);
             res = orderfields(res);
             res = structfun(@struct2table, res, 'un', 0);
         end
         
-        function res = vacancies(obj, varargin)
+        function [res, err] = industries(obj)
+            %% Get industries
+            method = 'industries';
+            [res, err] = obj.call_api(method);
+            res = struct2table(res);
+        end
+        
+        function [res, err] = specializations(obj)
+            %% Get specializations
+            method = 'specializations';
+            [res, err] = obj.call_api(method);
+            res = struct2table(res);
+        end
+        
+        function [res, err] = areas(obj)
+            %% Get areas
+            method = 'areas';
+            [res, err] = obj.call_api(method);
+            res = struct2table(res);
+        end
+        
+        function [res, err] = metro(obj)
+            %% Get metro
+            method = 'metro';
+            [res, err] = obj.call_api(method);
+            res = struct2table(res);
+        end
+        
+        function [res, err] = vacancies(obj, varargin)
             %% Get vacancies
             method = 'vacancies';
             params = {'text', 'optional', ''
@@ -99,7 +127,7 @@ classdef HeadHunter < WEB.API.Common
                 'no_magic', 'optional', true
                 'premium', 'optional', false
                 'getAll', 'apiOption', false
-                'step', 'apiOption', 12,
+                'step', 'apiOption', 12
                 'toFile', 'apiOption', ''};
             [params, apiopts] = obj.prepare_params(params, varargin);
             if apiopts.getAll
@@ -119,13 +147,13 @@ classdef HeadHunter < WEB.API.Common
                 p = 1;
                 for n = 1 : ns
                     fprintf('%d/%d: page 1\n', n, ns);
-                    res = getBatch(obj, method, params, ds, n, p);
+                    [res, err] = getBatch(obj, method, params, ds, n, p);
                     items = obj.TU.concat({items res.items});
                     ps = res.pages;
                     if ps > 1
                         for p = 2 : ps
                             fprintf('%d/%d: page %d/%d\n', n, ns, p, ps);
-                            res = getBatch(obj, method, params, ds, n, p);
+                            [res, err] = getBatch(obj, method, params, ds, n, p);
                             items = obj.TU.concat({items res.items});
                             pause(0.1);
                         end
@@ -142,15 +170,15 @@ classdef HeadHunter < WEB.API.Common
                     end
                 end
             else
-                res = obj.call_api(method, params);
+                [res, err] = obj.call_api(method, params);
                 res.items = obj.extract(res, 'items');
             end
-            function res = getBatch(obj, method, params, ds, n, p)
+            function [res, err] = getBatch(obj, method, params, ds, n, p)
                 params.date_from = ds(n);
                 params.date_to = ds(n + 1);
                 params.per_page = 100;
                 params.page = p - 1;
-                res = obj.call_api(method, params);
+                [res, err] = obj.call_api(method, params);
             end
         end
         
