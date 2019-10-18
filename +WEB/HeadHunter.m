@@ -153,13 +153,16 @@ classdef HeadHunter < WEB.API.Common
                     if ps > 1
                         for p = 2 : ps
                             fprintf('%d/%d: page %d/%d\n', n, ns, p, ps);
+                            if ps == 20
+                                warning('Bulk overflow, some data lost');
+                            end
                             [res, err] = getBatch(obj, method, params, ds, n, p);
                             items = obj.TU.concat({items res.items});
                             pause(0.1);
                         end
                     end
                 end
-                res = obj.TU.unique(items, 'id');
+                %res = obj.TU.unique(items, 'id');
                 res = items;
                 tof = apiopts.toFile;
                 if tof
