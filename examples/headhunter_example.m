@@ -2,6 +2,8 @@
 access_token = '...';  % place here your Access Token
 %% Create service object
 hh = WEB.HeadHunter(access_token);
+%% Create service object without authorization
+hh = WEB.HeadHunter();
 %% Get info about me
 [res, err] = hh.me()
 %% Get dictionaries
