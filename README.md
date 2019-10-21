@@ -26,6 +26,7 @@ Framework for building handy WEB APIs to work with any WEB services from MATLAB
 * [uinames.com](https://uinames.com/) - Random names generator
 * [VK](https://vk.com/) - Russian social network ![OAuth 2.0 logo](https://cdn-images-1.medium.com/max/16/0*QWNG5EAnPSaUSAHH.png "OAuth 2.0")
 * [YouTube](https://youtube.com/) - Video hosting
+* [MPS](https://www.mathworks.com/products/matlab-production-server.html) - MATLAB Production Server
 
 **[Welcome aboard!](https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project) Together we will add more of services API and improve the existing.**
 
@@ -106,6 +107,7 @@ WEB.API.Doc
 * [uinames.com](https://uinames.com/) - генератор случайных имён
 * [VK](https://vk.com/) - российская социальная сеть ![OAuth 2.0 logo](https://cdn-images-1.medium.com/max/16/0*QWNG5EAnPSaUSAHH.png "OAuth 2.0")
 * [YouTube](https://youtube.com/) - видео-хостинг
+* [MPS](https://www.mathworks.com/products/matlab-production-server.html) - MATLAB Production Server
 
 **[Присоединяйтесь!](https://git-scm.com/book/ru/v2/GitHub-Внесение-собственного-вклада-в-проекты) Вместе мы добавим больше сервисов и улучшим работу с имеющимися.**
 
