@@ -157,7 +157,11 @@ classdef HeadHunter < WEB.API.Common
                                 warning('Bulk overflow, some data lost');
                             end
                             [res, err] = getBatch(obj, method, params, ds, n, p);
-                            items = obj.TU.concat({items res.items});
+                            if err
+                                disp(err);
+                            else
+                                items = obj.TU.concat({items res.items});
+                            end
                             pause(0.1);
                         end
                     end
