@@ -156,10 +156,7 @@ classdef Req < handle
         function addurl(obj, add)
             %% Add method to URL
             if ~isempty(obj.url)
-                 if ~endsWith(obj.url, '/')
-                     obj.url = obj.url + "/";
-                 end
-                 obj.url = obj.url + string(add);
+                 obj.url = strip(obj.url, "/") + "/" + strip(add, "/");
             end
         end
         
@@ -324,11 +321,15 @@ classdef Req < handle
         
         function data = getstruct(~, data)
             %% convert data to struct
-            if istable(data)
-                for i = 1 : height(data)
-                    s.(char(data{i, 1})) = data{i, 2};
+            if ~isempty(data)
+                if istable(data)
+                    for i = 1 : height(data)
+                        s.(char(data{i, 1})) = data{i, 2};
+                    end
+                    data = s;
                 end
-                data = s;
+            else
+                data = struct();
             end
         end
         
