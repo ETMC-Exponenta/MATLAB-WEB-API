@@ -5,6 +5,12 @@ classdef MPS < WEB.API.Common
         addr % Server address with port
         app % MPS application
         outputFormat % output Format for synchronous request
+        client % client ID for asynchronous request
+        id % ID of asynchronous request
+        self % URI of asynchronous request
+        up % URI of asynchronous requests collection
+        state % state of asynchronous request
+        lastModifiedSeq % server state number
     end
     
     methods
@@ -14,6 +20,7 @@ classdef MPS < WEB.API.Common
             obj.addr = address;
             obj.app = application;
             obj.setOutputFormat();
+            obj.client = char(java.net.InetAddress.getLocalHost.getHostName);
         end
         
         function setOutputFormat(obj, options)
@@ -49,22 +56,97 @@ classdef MPS < WEB.API.Common
                 rhs = []
                 nout double = 1
             end
-            req = WEB.API.Req(obj.addr); % new WEB Request
-            req.addurl(obj.app); % add API method
-            req.addurl(fcn); % add API method
-            body = struct('rhs', rhs, 'nargout', nout, 'outputFormat', obj.outputFormat);
-            req.setbody(body);
-            req.setopts('ContentType', 'json'); % MATLAB works with JSON data
-            req.setopts('MediaType', 'application/json'); % MATLAB works with JSON data
-            req.setopts('Timeout', obj.timeout); % for heavy calls
-            [res, err] = post(req); % call WEB API
-            if isfield(res, 'error')
-                err = res.error;
-            end
+            body = obj.createBody(rhs, nout);
+            [res, err] = obj.post(obj.app, fcn, body); % call WEB API
             if isfield(res, 'lhs')
                 res = res.lhs;
             else
                 res = [];
+            end
+        end
+
+        function [res, err] = async(obj, fcn, rhs, nout)
+            %% Asynchronous execution
+            arguments
+                obj
+                fcn
+                rhs = []
+                nout double = 1
+            end
+            body = obj.createBody(rhs, nout);
+            query = struct('mode', 'async', 'client', obj.client);
+            [res, err] = obj.post(obj.app, fcn, body, query); % call WEB API
+            if ~err
+                obj.id = res.id;
+                obj.self = res.self;
+                obj.up = res.up;
+                obj.state = res.state;
+                obj.lastModifiedSeq = res.lastModifiedSeq;
+            end
+        end
+        
+        function [res, err] = representation(obj)
+            %% Get representation of asynchronous request
+            [res, err] = obj.get(obj.self, '');
+            if ~err
+                obj.self = res.self;
+                obj.state = res.state;
+            end
+        end
+        
+        function [res, err] = collection(obj, since, clients, ids)
+            %% Get collections of asynchronous requests
+            arguments
+                obj
+                since double = obj.lastModifiedSeq
+                clients = ''
+                ids = ''
+            end
+            if isempty(clients)
+                clients = obj.client;
+            end
+            if ~isempty(ids)
+                query = struct('since', since, 'ids', obj.id);
+            else
+                query = struct('since', since, 'clients', clients);
+            end
+            [res, err] = obj.get(obj.up, '', query);
+        end
+        
+        function [res, err] = information(obj)
+            %% Get information about asynchronous requests
+            [res, err] = obj.get(obj.self, 'info');
+            if ~err
+                obj.lastModifiedSeq = res.lastModifiedSeq;
+                obj.state = res.state;
+            end
+        end
+        
+        function [res, err, raw] = result(obj)
+            %% Get asynchronous requests result
+            [raw, err] = obj.get(obj.self, 'result');
+            if ~err
+                if isstruct(raw)
+                    res = raw;
+                else
+                    res = jsondecode(char(raw'));
+                end
+                res = res.lhs;
+            end
+        end
+        
+        function [res, err] = cancel(obj)
+            %% Cancel asynchronous requests
+            [res, err] = obj.post(obj.self, 'cancel');
+        end
+        
+        function [res, err] = delete(obj)
+            %% Delete asynchronous request
+            if ~isempty(obj.self)
+                [res, err] = obj.delete_req(obj.self);
+                obj.self = [];
+                obj.id = [];
+                obj.state = '';
             end
         end
         
@@ -77,13 +159,49 @@ classdef MPS < WEB.API.Common
     
     methods (Access = private)
         
-        function [res, err] = get(obj, app, fcn)
+        function [res, err] = get(obj, app, fcn, query)
             %% Perform get request
             req = WEB.API.Req(obj.addr);
             req.addurl(app);
             req.addurl(fcn);
+            if nargin > 3
+                req.addquery(query);
+            end
             req.setopts('Timeout', obj.timeout);
             [res, err] = req.get();
+        end
+        
+        function [res, err] = post(obj, app, fcn, body, query)
+            %% Execute synchronous request
+            req = WEB.API.Req(obj.addr); % new WEB Request
+            req.addurl(app); % add API method
+            req.addurl(fcn); % add API method
+            if nargin > 4
+                req.addquery(query);
+            end
+            if nargin > 3
+                req.setbody(body);
+            end
+            req.setopts('ContentType', 'json'); % MATLAB works with JSON data
+            req.setopts('MediaType', 'application/json'); % MATLAB works with JSON data
+            req.setopts('Timeout', obj.timeout); % for heavy calls
+            [res, err] = post(req); % call WEB API
+            if isfield(res, 'error')
+                err = res.error;
+            end
+        end
+        
+        function [res, err] = delete_req(obj, uri)
+            %% Perform get request
+            req = WEB.API.Req(obj.addr);
+            req.addurl(uri);
+            req.setopts('Timeout', obj.timeout);
+            [res, err] = req.call('delete');
+        end
+        
+        function body = createBody(obj, rhs, nout)
+            %% Create body for post request
+            body = struct('rhs', rhs, 'nargout', nout, 'outputFormat', obj.outputFormat);
         end
         
     end

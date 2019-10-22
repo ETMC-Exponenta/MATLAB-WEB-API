@@ -12,3 +12,11 @@ fcnname = '...'; % deployed function name
 argsin = {'...'}; % input arguments
 nargsout = 1; % number of output arguments
 [res, err] = mps.exec(fcnname, argsin, nargsout)
+%% Asynchronous execution
+fcnname = '...'; % deployed function name
+argsin = {'...'}; % input arguments
+nargsout = 1; % number of output arguments
+[res, err] = mps.async(fcnname, argsin, nargsout) % create async response
+res = mps.information() % get response information and state
+res = mps.result() % get response result
+mps.delete() % delete request from MPS
