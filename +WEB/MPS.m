@@ -57,11 +57,9 @@ classdef MPS < WEB.API.Common
                 nout double = 1
             end
             body = obj.createBody(rhs, nout);
-            [res, err] = obj.post(obj.app, fcn, body); % call WEB API
-            if isfield(res, 'lhs')
-                res = res.lhs;
-            else
-                res = [];
+            [res, err] = obj.post(obj.app, fcn, body);
+            if ~err
+                res = mps.json.decoderesponse(res);
             end
         end
 
@@ -77,6 +75,7 @@ classdef MPS < WEB.API.Common
             query = struct('mode', 'async', 'client', obj.client);
             [res, err] = obj.post(obj.app, fcn, body, query); % call WEB API
             if ~err
+                res = jsondecode(res);
                 obj.id = res.id;
                 obj.self = res.self;
                 obj.up = res.up;
@@ -173,22 +172,19 @@ classdef MPS < WEB.API.Common
         
         function [res, err] = post(obj, app, fcn, body, query)
             %% Execute synchronous request
-            req = WEB.API.Req(obj.addr); % new WEB Request
-            req.addurl(app); % add API method
-            req.addurl(fcn); % add API method
+            req = WEB.API.Req(obj.addr);
+            req.addurl(app);
+            req.addurl(fcn);
             if nargin > 4
                 req.addquery(query);
             end
             if nargin > 3
                 req.setbody(body);
             end
-            req.setopts('ContentType', 'json'); % MATLAB works with JSON data
-            req.setopts('MediaType', 'application/json'); % MATLAB works with JSON data
-            req.setopts('Timeout', obj.timeout); % for heavy calls
-            [res, err] = post(req); % call WEB API
-            if isfield(res, 'error')
-                err = res.error;
-            end
+            req.setopts('ContentType', 'text');
+            req.setopts('MediaType', 'application/json');
+            req.setopts('Timeout', obj.timeout);
+            [res, err] = post(req);
         end
         
         function [res, err] = delete_req(obj, uri)
@@ -201,7 +197,12 @@ classdef MPS < WEB.API.Common
         
         function body = createBody(obj, rhs, nout)
             %% Create body for post request
-            body = struct('rhs', rhs, 'nargout', nout, 'outputFormat', obj.outputFormat);
+            if ~iscell(rhs)
+                rhs = {rhs};
+            end
+            body = mps.json.encoderequest(rhs, 'Nargout', nout,...
+                'OutputFormat', obj.outputFormat.mode,...
+                'OutputNanInfType', obj.outputFormat.nanInfFormat);
         end
         
     end
