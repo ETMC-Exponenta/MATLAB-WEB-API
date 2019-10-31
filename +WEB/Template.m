@@ -19,7 +19,7 @@ classdef Template < WEB.API.Common
             obj.storage.path = path;
         end
         
-        function res = call_api(obj, method, params, vars)
+        function [res, err] = call_api(obj, method, params, vars)
             %% Call Template API - common method
             [params, apiopts] = obj.prepare_params(params, vars); % prepare call parameters and options
             % params - API method parameters (will be added to HTTP request)
@@ -29,7 +29,7 @@ classdef Template < WEB.API.Common
             req.setquery(params); % add method parameters
             req.setopts('ContentType', 'json'); % MATLAB works with JSON data
             req.setopts('Timeout', obj.timeout); % for heavy calls
-            res = get(req); % call WEB API
+            [res, err] = get(req); % call WEB API
             if apiopts.checkerr % check API auxiliary option
                 obj.check_api_error(res); % check for WEB API errors if you need
             end
@@ -44,28 +44,28 @@ classdef Template < WEB.API.Common
             end
         end
         
-        function res = method1(obj, p1, varargin)
+        function [res, err] = method1(obj, p1, varargin)
             %% Method1 example
             method = 'meth1'; % WEB API Method (see WEB API documentation)
             params = {'p1', 'required', p1      % required HTTP request parameter
                 'p2', 'optional', ''            % optional HTTP request parameter
                 'p3', 'optional', 100           % optional HTTP request parameter
                 'checkErr', 'apiOption', true}; % auxiliary API option
-            res = obj.call_api(method, params, varargin); % call API
+            [res, err] = obj.call_api(method, params, varargin); % call API
         end
         
-        function res = method2(obj, varargin)
+        function [res, err] = method2(obj, varargin)
             %% Method2 example
             method = 'meth2';
             params = {'p1', 'optional', 0}; % Only one optional parameter
-            res = obj.call_api(method, params, varargin);
+            [res, err] = obj.call_api(method, params, varargin);
         end
         
-        function res = method3(obj, varargin)
+        function [res, err] = method3(obj, varargin)
             %% Method3 example
             method = 'meth3';
             % Method has no parameters
-            res = obj.call_api(method, [], []);
+            [res, err] = obj.call_api(method, [], []);
         end
         
     end
