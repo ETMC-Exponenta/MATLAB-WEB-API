@@ -110,14 +110,20 @@ classdef MATLABWEBAPIDev < handle
             web(obj.ext.remote + "/releases/edit/v" + obj.vp, '-browser')
         end
         
-        function gendoc(obj, format)
-            % Generate html from mlx doc
+        function gendoc(obj, format, docdir, showcred)
+            % Generate html, pdf or md (beta) from mlx
             if nargin < 2
                 format = "html";
             else
                 format = string(format);
             end
-            docdir = fullfile(obj.ext.root, 'doc');
+            if nargin < 3
+                docdir = fullfile(obj.ext.root, 'doc');
+            end
+            if nargin < 4
+                showcred = false;
+            end
+            docdir = strip(docdir, '/');
             fs = struct2table(dir(fullfile(docdir, '*.mlx')), 'AsArray', true);
             fs = convertvars(fs, 1:3, 'string');
             for i = 1 : height(fs)
@@ -133,7 +139,11 @@ classdef MATLABWEBAPIDev < handle
                 end
                 if convert
                     fprintf('Converting %s.mlx...\n', fname);
-                    matlab.internal.liveeditor.openAndConvert(fpath, htmlpath);
+                    if format == "md"
+                        obj.mlx2md(fpath, htmlpath, showcred);
+                    else
+                        matlab.internal.liveeditor.openAndConvert(fpath, htmlpath);
+                    end
                 end
             end
             disp('Docs have been generated');
@@ -219,9 +229,12 @@ classdef MATLABWEBAPIDev < handle
             obj.ext.echo('has been pushed');
         end
         
-        function tag(obj)
+        function tag(obj, vp)
             % Tag git project and push tag
-            tagcmd = sprintf('git tag -a v%s -m v%s', obj.vp, obj.vp);
+            if nargin < 2
+                vp = obj.vp;
+            end
+            tagcmd = sprintf('git tag -a v%s -m v%s', vp, vp);
             system(tagcmd);
             system('git push --tags');
             obj.ext.echo('has been tagged');
@@ -235,6 +248,83 @@ classdef MATLABWEBAPIDev < handle
         end
         
     end
+
+    
+    methods (Hidden = true)
+        
+        function mlx2md(obj, fpath, htmlpath, showcred)
+            % Convert mlx-script to markdown md-file (beta)
+            if nargin < 4
+                showcred = false;
+            end
+            [~, fname] = fileparts(fpath);
+            tempf = "_temp_" + fname + ".m";
+            matlab.internal.liveeditor.openAndConvert(fpath, char(tempf));
+            txt = string(split(fileread(tempf), newline));
+            delete(tempf);
+            txt = erase(txt, char(13));
+            % Convert code
+            code = find(~startsWith(txt, '%') & txt ~= "");
+            txt2 = strings();
+            for i = 1 : length(txt)
+                if ismember(i, code)
+                    if ~ismember(i-1, code)
+                        txt2 = txt2 + "``` MATLAB" + newline;
+                    end
+                    txt2 = txt2 + txt(i) + newline;
+                    if ~ismember(i+1, code)
+                        txt2 = txt2 + "```" + newline;
+                    end
+                else
+                    txt2 = txt2 + txt(i) + newline;
+                end
+            end
+            txt = string(split(txt2, newline));
+            % Convert first title
+            if startsWith(txt(1), '%% ')
+                txt(1) = replace(txt(1), '%% ', '# ');
+            end
+            % Convert other titles
+            titles = startsWith(txt, '%% ') & txt ~= "%% ";
+            txt(titles) = replace(txt(titles), '%% ', '## ');
+            % Convert lists
+            lists = find(startsWith(txt, '% * '));
+            txt(lists) = extractAfter(txt(lists), '% ');
+            lists = find(startsWith(txt, '% # '));
+            txt(lists) = replace(txt(lists), '% # ', '* ');
+            % Convert text
+            text = find(startsWith(txt, '% '));
+            txt2 = strings();
+            for i = 1 : length(txt)
+                if ismember(i, text)
+                    str = char(txt(i));
+                    str = replace(str, '|', '`');
+                    %str = replace(str, '*', '**');
+                    txt2 = txt2 + str(3:end);
+                    if ~ismember(i+1, text)
+                        txt2 = txt2 + newline;
+                    end
+                else
+                    txt2 = txt2 + txt(i) + newline;
+                end
+            end
+            txt = string(split(txt2, newline));
+            br = txt == "%% ";
+            txt(br) = "";
+            % Convert links
+            links = extractBetween(join(txt, newline), '<', '>');
+            urls = extractBefore(links, ' ');
+            names = extractAfter(links, ' ');
+            txt = replace(txt, "<" + links + ">", "[" + names + "](" + urls + ")");
+            if showcred
+                txt(end+1) = sprintf("***\n*Generated from %s.mlx with [Toolbox Extender](%s)*",...
+                    fname, 'https://github.com/ETMC-Exponenta/ToolboxExtender');
+            end
+            obj.ext.writetxt(join(txt, newline), htmlpath, 'utf-8');
+        end
+        
+    end
+    
     
     methods (Static)
         
@@ -261,5 +351,5 @@ classdef MATLABWEBAPIDev < handle
 
     end
     
+    
 end
-

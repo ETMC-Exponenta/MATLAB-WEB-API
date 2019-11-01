@@ -305,13 +305,14 @@ classdef MATLABWEBAPIExtender < handle
             end
         end
         
-        function writetxt(~, txt, fpath)
+        function writetxt(~, txt, fpath, encoding)
             % Wtite text to file
-            if isfile(fpath)
-                fid = fopen(fpath, 'w', 'n', 'windows-1251');
-                fwrite(fid, unicode2native(txt, 'windows-1251'));
-                fclose(fid);
+            if nargin < 4
+                encoding = 'windows-1251';
             end
+            fid = fopen(fpath, 'w', 'n', encoding);
+            fwrite(fid, unicode2native(txt, encoding));
+            fclose(fid);
         end
         
         function txt = txtrep(obj, fpath, old, new)
