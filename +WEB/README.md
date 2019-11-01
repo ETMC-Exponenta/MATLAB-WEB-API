@@ -18,6 +18,7 @@
 - **VK.m** - Popular russian social network [VK.com](https://vk.com/dev/manuals) API :waning_crescent_moon: [(example)](../examples/vk_example.m)
 - **YouTube.m** - Video hosting [YouTube.com](https://www.youtube.com/yt/dev/) API :waning_crescent_moon: [(example)](../examples/youtube_example.m)
 - **MPS.m** - [MATLAB Production Server](https://www.mathworks.com/products/matlab-production-server.html) API :last_quarter_moon: [(example)](../examples/mps_example.m)
+- **TelegramBot.m** - [Telegram Bot API](https://core.telegram.org/bots/api) :waning_crescent_moon:
 
 # Описание WEB API :ru:
 - **+API** - ключевые компоненты WEB API (создание и обработка запросов, авторизация, построение API)
@@ -37,3 +38,4 @@
 - **VK.m** - API для работы с популярной российской соцсетью [VK.com](https://vk.com/dev/manuals) :waning_crescent_moon: [(пример)](../examples/vk_example.m)
 - **YouTube.m** - API видео-хостинга [YouTube.com](https://www.youtube.com/yt/dev/) :waning_crescent_moon: [(пример)](../examples/youtube_example.m)
 - **MPS.m** - [MATLAB Production Server](https://www.mathworks.com/products/matlab-production-server.html) API :last_quarter_moon: [(пример)](../examples/mps_example.m)
+- **TelegramBot.m** - [Telegram Bot API](https://core.telegram.org/bots/api) :waning_crescent_moon:
