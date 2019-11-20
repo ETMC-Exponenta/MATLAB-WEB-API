@@ -7,7 +7,7 @@
 
 Framework for building handy WEB APIs to work with any WEB services from MATLAB
 
-[Follow project on MathWorks File Exchange](https://www.mathworks.com/matlabcentral/fileexchange/68611)
+[![View MATLAB WEB API (connect to WEB services using OAuth 1.0/2.0) on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/68611)
 
 #### Key features:
 
