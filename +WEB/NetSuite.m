@@ -13,6 +13,7 @@ classdef NetSuite < WEB.API.Common
         email % NLAuth Email
         password % NLAuth Password
         role % NLAuth Role
+        TU = WEB.Utils.Tables % Tables utils
     end
     
     methods
@@ -57,12 +58,23 @@ classdef NetSuite < WEB.API.Common
             [res, err] = req.call(method);
         end
         
-        function [resp, err] = search(obj, type, columns, filters)
+        function [resp, err] = search(obj, type, columns, filters, varargin)
             %% NetSuite search
+            params = {
+                'type', 'required', type
+                'columns', 'required', columns
+                'filters', 'required', filters
+                'AsTable', 'apiOption', false
+                };
+            [params, apiopts] = obj.prepare_params(params, varargin);
             query = {'type', type
                 'columns', jsonencode(columns)
                 'filters', jsonencode(filters)};
             [resp, err] = obj.call_api(obj.sd_search, 'GET', query);
+            if ~isempty(resp) && apiopts.AsTable
+                resp = struct2table(resp, 'AsArray', true);
+                resp = obj.TU.expand(resp, 'values');
+            end
         end
         
         function [resp, err] = submit(obj, type, ids, values)
@@ -131,4 +143,3 @@ classdef NetSuite < WEB.API.Common
         
     end
 end
-
