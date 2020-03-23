@@ -131,6 +131,7 @@ classdef HeadHunter < WEB.API.Common
                 'toFile', 'apiOption', ''};
             [params, apiopts] = obj.prepare_params(params, varargin);
             if apiopts.getAll
+                k = 0;
                 if isfield(params, 'date_to')
                     d2 = params.date_to;
                 else
@@ -144,30 +145,36 @@ classdef HeadHunter < WEB.API.Common
                 ds = d1 : hours(apiopts.step) : d2;
                 ns = length(ds) - 1;
                 items = [];
-                p = 1;
                 for n = 1 : ns
-                    fprintf('%d/%d: page 1\n', n, ns);
+                    p = 1;
+                    %items = []; %MOD
+                    %k = k + 1; %MOD
+                    fprintf('%d/%d: page %d\n', n, ns, p);
                     [res, err] = getBatch(obj, method, params, ds, n, p);
-                    items = obj.TU.concat({items res.items});
-                    ps = res.pages;
-                    if ps > 1
-                        for p = 2 : ps
-                            fprintf('%d/%d: page %d/%d\n', n, ns, p, ps);
-                            if ps == 20
-                                warning('Bulk overflow, some data lost');
+                    if err
+                        disp("ERROR:" + newline + err)
+                    else
+                        items = obj.TU.concat({items res.items});
+                        ps = res.pages;
+                        if ps > 1
+                            for p = 2 : ps
+                                fprintf('%d/%d: page %d/%d\n', n, ns, p, ps);
+                                if ps == 20
+                                    warning('Bulk overflow, some data lost');
+                                end
+                                [res, err] = getBatch(obj, method, params, ds, n, p);
+                                if err
+                                    disp(err);
+                                else
+                                    items = obj.TU.concat({items res.items});
+                                end
+                                pause(0.05);
                             end
-                            [res, err] = getBatch(obj, method, params, ds, n, p);
-                            if err
-                                disp(err);
-                            else
-                                items = obj.TU.concat({items res.items});
-                            end
-                            pause(0.1);
                         end
                     end
+                    %save("data/data" + k, 'items'); %MOD
                 end
-                %res = obj.TU.unique(items, 'id');
-                res = items;
+                res = obj.TU.unique(items, 'id');
                 tof = apiopts.toFile;
                 if tof
                     if endsWith(tof, {'xlsx', 'xls', 'csv', 'txt'})
