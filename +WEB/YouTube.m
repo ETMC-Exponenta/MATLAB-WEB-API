@@ -45,7 +45,7 @@ classdef YouTube < WEB.API.Common
                     info = removevars(info, 'channelId');
                 end
                 T = [obj.TU.concat({res.items.snippet}) info];
-                T.publishedAt = datetime(T.publishedAt, 'InputFormat', "yyyy-MM-dd'T'HH:mm:ss'.000Z'");
+                T.publishedAt = datetime(T.publishedAt, 'InputFormat', "yyyy-MM-dd'T'HH:mm:ss'Z'");
                 if ~obj.TU.isvar(T, 'videoId')
                     T = obj.TU.addfield(T, 'videoId', '');
                     T = movevars(T, 'videoId', 'after', 'kind');
