@@ -63,8 +63,10 @@ classdef VK < WEB.API.Common
             end
             req = WEB.API.Req(obj.URL);
             req.addurl(method);
-            if isfield(apiopts, 'longMsg') && apiopts.longMsg
-                params.message = req.decode(params.message);
+            if isfield(apiopts, 'httpPost') && apiopts.httpPost
+                if isfield(params, 'message')
+                    params.message = req.decode(params.message);
+                end
                 req.setbody(params, 1);
                 req.addbody('v', obj.ver);
                 req.setopts('MediaType', 'application/x-www-form-urlencoded');
@@ -73,6 +75,9 @@ classdef VK < WEB.API.Common
                 req.addbody('access_token', req.getquery('access_token'));
                 req.clearquery();
                 [res, err] = post(req);
+                if ~isempty(res)
+                    res = res.Body.Data;
+                end
             else
                 req.setquery(params);
                 req.addquery('v', obj.ver);
@@ -210,7 +215,8 @@ classdef VK < WEB.API.Common
             method = 'groups.getById';
             params = {'id', 'required', id
                 'fields', 'required', fields
-                'extract', 'apiOption', true};
+                'extract', 'apiOption', true
+                'httpPost', 'apiOption', false};
             if isscalar(id)
                 params{1, 1} = 'group_id';
             else
@@ -253,7 +259,7 @@ classdef VK < WEB.API.Common
                 'message', 'optional', ''
                 'attachments', 'optional', ''
                 'friends_only', 'optional', 0
-                'longMsg', 'apiOption', false};
+                'httpPost', 'apiOption', false};
             [res, ~, err] = obj.call_api(method, params, varargin);
         end
         
