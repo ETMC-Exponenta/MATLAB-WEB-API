@@ -64,9 +64,7 @@ classdef VK < WEB.API.Common
             req = WEB.API.Req(obj.URL);
             req.addurl(method);
             if isfield(apiopts, 'httpPost') && apiopts.httpPost
-                if isfield(params, 'message')
-                    params.message = req.decode(params.message);
-                end
+                params = obj.decode_params(params, ["message" "name" "description"]);
                 req.setbody(params, 1);
                 req.addbody('v', obj.ver);
                 req.setopts('MediaType', 'application/x-www-form-urlencoded');
@@ -270,7 +268,8 @@ classdef VK < WEB.API.Common
                 'description', 'optional', ''
                 'is_private', 'optional', 0
                 'wallpost', 'optional', 0
-                'link', 'optional', ''};
+                'link', 'optional', ''
+                'httpPost', 'apiOption', false};
             [res, ~, err] = obj.call_api(method, params, varargin);
             uploaded = webread(res.response.upload_url);
             if ~uploaded.response
@@ -302,6 +301,25 @@ classdef VK < WEB.API.Common
                 'extract', 'apiOption', true};
             p = obj.prepare_params(params, varargin);
             [res, ~, err] = obj.call_api(method, params, varargin);
+        end
+        
+    end
+    
+    methods (Access = private, Static)
+        
+        function params = decode_params(params, param_list)
+            %% Fix parameters encoding
+            arguments
+                params
+                param_list string
+            end
+            req = WEB.API.Req;
+            for i = 1 : length(param_list)
+                p = param_list(i);
+                if isfield(params, p)
+                    params.(p) = req.decode(params.(p));
+                end
+            end
         end
         
     end
