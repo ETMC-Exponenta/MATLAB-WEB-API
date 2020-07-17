@@ -217,6 +217,7 @@ classdef VK < WEB.API.Common
                 'httpPost', 'apiOption', false};
             if isscalar(id)
                 params{1, 1} = 'group_id';
+                params{1, 3} = string(params{1, 3});
             else
                 params{1, 1} = 'group_ids';
                 params{1, 3} = join(string(params{1, 3}), ',');
