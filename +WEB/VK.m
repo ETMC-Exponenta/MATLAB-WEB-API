@@ -7,7 +7,7 @@ classdef VK < WEB.API.Common
         client_id % Client ID
         client_secret % Client Secret
         scope % Scope
-        ver = '5.85' % API Version
+        ver = '5.120' % API Version
         authdata % Authentication Data
     end
     
