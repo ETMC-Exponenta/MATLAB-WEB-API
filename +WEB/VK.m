@@ -291,6 +291,20 @@ classdef VK < WEB.API.Common
             res = res.response;
         end
         
+        function [res, err] = video_get(obj, varargin)
+            %% Get video
+            method = 'video.get';
+            params = {'owner_id', 'optional', 0
+                'videos', 'optional', ''
+                'album_id', 'optional', 0
+                'count', 'optional', 100
+                'offset', 'optional', 0
+                'extended', 'optional', 0
+                'extract', 'apiOption', true};
+            p = obj.prepare_params(params, varargin);
+            [res, ~, err] = obj.call_api(method, params, varargin);
+        end
+        
         function [res, err] = notifications_get(obj, varargin)
             %% Get notifications
             method = 'notifications.get';
