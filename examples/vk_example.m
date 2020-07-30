@@ -1,9 +1,9 @@
 %% Set auth data
 client_id = '...';      % place here your Client ID
 client_secret = '...';  % place here your Client Secret
-scope = 'all';
+scope = {'friends', 'pages', 'groups', 'wall'}; % selective scope
+% scope = 'all';
 % scope = 140492255 % all
-% scope = {'friends', 'pages', 'groups', 'wall'}; % selective scope
 %% Create service object
 vk = WEB.VK(client_id, scope, client_secret);
 %% Set data path
