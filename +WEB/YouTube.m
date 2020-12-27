@@ -24,13 +24,15 @@ classdef YouTube < WEB.API.Common
             req.addurl(method);
             req.setquery(params);
             req.addquery('key', obj.key);
-            req.addquery('part', 'snippet');
+            if isempty(req.getquery('part'))
+                req.addquery('part', 'snippet');
+            end
             req.setopts('Timeout', obj.timeout);
             [res, err] = get(req);
         end
         
         function [T, res, err] = search(obj, varargin)
-            %% Get current weather
+            %% Get search results
             method = 'search';
             params = {
                 'q', 'optional', ''
@@ -58,6 +60,38 @@ classdef YouTube < WEB.API.Common
             end
         end
         
+        function [res, err] = channels_list(obj, part, varargin)
+            %% Get channels info
+            method = 'channels';
+            params = {
+                'part', 'required', part
+                'categoryId', 'optional', ''
+                'forUsername', 'optional', ''
+                'id', 'optional', ''
+                'managedByMe', 'optional', false
+                'mine', 'optional', false
+                'h1', 'optional', ''
+                'maxResults', 'optional', 5
+                'onBehalfOfContentOwner', 'optional', ''
+                'pageToken', 'optional', ''
+                };
+            [res, err, apiopts] = obj.call_api(method, params, varargin);
+        end
+        
+        function [res, err] = playlistItems_list(obj, part, varargin)
+            %% Get playlist items info
+            method = 'playlistItems';
+            params = {
+                'part', 'required', part
+                'id', 'optional', ''
+                'playlistId', 'optional', ''
+                'maxResults', 'optional', 5
+                'onBehalfOfContentOwner', 'optional', ''
+                'pageToken', 'optional', ''
+                'videoId', 'optional', ''
+                };
+            [res, err, apiopts] = obj.call_api(method, params, varargin);
+        end
+        
     end
 end
-
