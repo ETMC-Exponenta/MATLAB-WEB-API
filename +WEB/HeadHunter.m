@@ -128,6 +128,7 @@ classdef HeadHunter < WEB.API.Common
                 'premium', 'optional', false
                 'getAll', 'apiOption', false
                 'step', 'apiOption', 12
+                'batchSave', 'apiOption', false
                 'toFile', 'apiOption', ''};
             [params, apiopts] = obj.prepare_params(params, varargin);
             if apiopts.getAll
@@ -145,16 +146,29 @@ classdef HeadHunter < WEB.API.Common
                 ds = d1 : hours(apiopts.step) : d2;
                 ns = length(ds) - 1;
                 items = [];
+                if apiopts.batchSave
+                    if ~isfolder('data')
+                        mkdir('data');
+                    end
+                    k = 0;
+                end
                 for n = 1 : ns
                     p = 1;
-                    %items = []; %MOD
-                    %k = k + 1; %MOD
+                    if apiopts.batchSave
+                        items = [];
+                        k = k + 1;
+                    end
                     fprintf('%d/%d: page %d\n', n, ns, p);
                     [res, err] = getBatch(obj, method, params, ds, n, p);
                     if err
                         disp("ERROR:" + newline + err)
                     else
-                        items = obj.TU.concat({items res.items});
+                        items1 = obj.TU.concat(res.items);
+                        if isempty(items)
+                            items = items1;
+                        else
+                            items = obj.TU.concat({items items1});
+                        end
                         ps = res.pages;
                         if ps > 1
                             for p = 2 : ps
@@ -166,15 +180,24 @@ classdef HeadHunter < WEB.API.Common
                                 if err
                                     disp(err);
                                 else
-                                    items = obj.TU.concat({items res.items});
+                                    items1 = obj.TU.concat(res.items);
+                                    if isempty(items)
+                                        items = items1;
+                                    else
+                                        items = obj.TU.concat({items items1});
+                                    end
                                 end
                                 pause(0.05);
                             end
                         end
                     end
-                    %save("data/data" + k, 'items'); %MOD
+                    if apiopts.batchSave
+                        save("data/data" + k, 'items');
+                    end
                 end
-                res = obj.TU.unique(items, 'id');
+                if ~apiopts.batchSave
+                    res = obj.TU.unique(items, 'id');
+                end
                 tof = apiopts.toFile;
                 if tof
                     if endsWith(tof, {'xlsx', 'xls', 'csv', 'txt'})
