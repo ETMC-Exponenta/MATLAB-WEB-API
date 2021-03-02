@@ -192,7 +192,8 @@ classdef HeadHunter < WEB.API.Common
                         end
                     end
                     if apiopts.batchSave
-                        save("data/data" + k, 'items');
+                        timestamp = datestr(datetime, 'yyyymmddhhMMssFFF');
+                        save("data/data" + timestamp, 'items');
                     end
                 end
                 if ~apiopts.batchSave
