@@ -129,6 +129,7 @@ classdef HeadHunter < WEB.API.Common
                 'getAll', 'apiOption', false
                 'step', 'apiOption', 12
                 'batchSave', 'apiOption', false
+                'saveParams', 'apiOption', false
                 'toFile', 'apiOption', ''};
             [params, apiopts] = obj.prepare_params(params, varargin);
             if apiopts.getAll
@@ -192,8 +193,16 @@ classdef HeadHunter < WEB.API.Common
                         end
                     end
                     if apiopts.batchSave
-                        timestamp = datestr(datetime, 'yyyymmddhhMMssFFF');
-                        save("data/data" + timestamp, 'items');
+                        if ~isempty(items)
+                            if apiopts.saveParams
+                                data = struct('items', items, 'params', params, 'apiopts', apiopts);
+                                vartosave = 'data';
+                            else
+                                vartosave = 'items';
+                            end
+                            timestamp = datestr(datetime, 'yyyymmddhhMMssFFF');
+                            save("data/data" + timestamp, vartosave);
+                        end
                     end
                 end
                 if ~apiopts.batchSave
