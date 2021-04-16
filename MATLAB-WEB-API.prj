@@ -1,13 +1,13 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
-  <configuration file="E:\MATLAB\MATLAB-WEB-API\MATLAB-WEB-API.prj" location="E:\MATLAB\MATLAB-WEB-API" name="MATLAB-WEB-API" target="target.toolbox" target-name="Package Toolbox">
+  <configuration file="D:\MATLAB\MATLAB-WEB-API\MATLAB-WEB-API.prj" location="D:\MATLAB\MATLAB-WEB-API" name="MATLAB-WEB-API" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>MATLAB WEB API</param.appname>
-    <param.authnamewatermark>Pavel Roslovets</param.authnamewatermark>
-    <param.email>roslovets@exponenta.ru</param.email>
-    <param.company>ETMC Exponenta</param.company>
+    <param.authnamewatermark />
+    <param.email />
+    <param.company />
     <param.summary>Work with WEB services directly from MATLAB</param.summary>
     <param.description>Work with existed WEB-services API or create your own</param.description>
     <param.screenshot>${PROJECT_ROOT}\doc\MATLAB-WEB-API.png</param.screenshot>
-    <param.version>0.6.2</param.version>
+    <param.version>0.6.3</param.version>
     <param.output>${PROJECT_ROOT}\MATLAB WEB API.mltbx</param.output>
     <param.products.name />
     <param.products.id />
@@ -95,7 +95,6 @@ installweb.m
     <fileset.rootfiles>
       <file>${PROJECT_ROOT}\+WEB</file>
       <file>${PROJECT_ROOT}\.git</file>
-      <file>${PROJECT_ROOT}\.github</file>
       <file>${PROJECT_ROOT}\.gitignore</file>
       <file>${PROJECT_ROOT}\cover.png</file>
       <file>${PROJECT_ROOT}\data</file>
@@ -105,12 +104,14 @@ installweb.m
       <file>${PROJECT_ROOT}\info.xml</file>
       <file>${PROJECT_ROOT}\install.m</file>
       <file>${PROJECT_ROOT}\installweb.m</file>
+      <file>${PROJECT_ROOT}\main</file>
       <file>${PROJECT_ROOT}\MATLAB-WEB-API.mltbx</file>
       <file>${PROJECT_ROOT}\MATLAB-WEB-API.prj</file>
       <file>${PROJECT_ROOT}\MATLABWEBAPIDev.m</file>
       <file>${PROJECT_ROOT}\MATLABWEBAPIExtender.m</file>
       <file>${PROJECT_ROOT}\MATLABWEBAPIUpdater.m</file>
       <file>${PROJECT_ROOT}\README.md</file>
+      <file>${PROJECT_ROOT}\resources</file>
       <file>${PROJECT_ROOT}\ToolboxConfig.xml</file>
       <file>${PROJECT_ROOT}\work</file>
     </fileset.rootfiles>
@@ -118,11 +119,11 @@ installweb.m
     <fileset.depfun.excluded />
     <fileset.package />
     <build-deliverables>
-      <file location="${PROJECT_ROOT}" name="MATLAB WEB API.mltbx" optional="false">E:\MATLAB\MATLAB-WEB-API\MATLAB WEB API.mltbx</file>
+      <file location="${PROJECT_ROOT}" name="MATLAB WEB API.mltbx" optional="false">D:\MATLAB\MATLAB-WEB-API\MATLAB WEB API.mltbx</file>
     </build-deliverables>
     <workflow />
     <matlab>
-      <root>E:\Program Files\MATLAB\R2020a</root>
+      <root>C:\Program Files\MATLAB\R2021a</root>
       <toolboxes>
         <toolbox name="matlabcoder" />
         <toolbox name="embeddedcoder" />
